@@ -217,7 +217,7 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-2xl font-bold">70%</span>
+                      <span className="text-2xl font-bold">90%</span>
                     </div>
                   </div>
                   <p className="text-gray-600">of coupons are being used</p>
