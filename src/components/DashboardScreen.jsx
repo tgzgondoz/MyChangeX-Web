@@ -13,18 +13,41 @@ import {
   faArrowDown,
   faReceipt,
   faThLarge,
-  faCog
+  faCog,
+  faTimes,
+  faEye,
+  faUser,
+  faTag,
+  faCreditCard,
+  faCalendar,
+  faPercentage,
+  faCheckCircle,
+  faTimesCircle
 } from '@fortawesome/free-solid-svg-icons';
 import './DashboardScreen.css';
 
 const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [detailView, setDetailView] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
   
   // Calculate statistics
   const totalRevenue = transactions.reduce((sum, transaction) => sum + (transaction.amount || 0), 0);
   const activeCoupons = coupons.filter(coupon => coupon && coupon.isActive).length;
   const recentTransactions = transactions.slice(0, 5);
+
+  // Open detail view
+  const openDetailView = (type, item) => {
+    setDetailView(type);
+    setSelectedItem(item);
+  };
+
+  // Close detail view
+  const closeDetailView = () => {
+    setDetailView(null);
+    setSelectedItem(null);
+  };
 
   if (dataLoading) {
     return (
@@ -188,15 +211,28 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
             <div className="data-card">
               <div className="data-card-header">
                 <div className="data-card-title">Recent Transactions</div>
-                <div className="view-all-text">View All</div>
+                <div 
+                  className="view-all-text"
+                  onClick={() => setDetailView('transactions')}
+                >
+                  View All
+                </div>
               </div>
               
               {recentTransactions.length > 0 ? (
                 recentTransactions.map((transaction, index) => (
-                  <div key={index} className="transaction-item">
+                  <div 
+                    key={index} 
+                    className="transaction-item"
+                    onClick={() => openDetailView('transaction', transaction)}
+                  >
                     <div>
-                      <div className="transaction-user">User {index + 1}</div>
-                      <div className="transaction-date">Aug 30, 2025</div>
+                      <div className="transaction-user">
+                        {transaction.userName || `User ${index + 1}`}
+                      </div>
+                      <div className="transaction-date">
+                        {transaction.date || 'Aug 30, 2025'}
+                      </div>
                     </div>
                     <div className="transaction-amount">${transaction.amount || '0.00'}</div>
                     <div className="status-badge">
@@ -216,7 +252,12 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
             <div className="data-card">
               <div className="data-card-header">
                 <div className="data-card-title">Coupon Usage</div>
-                <div className="view-all-text">View Report</div>
+                <div 
+                  className="view-all-text"
+                  onClick={() => setDetailView('coupons')}
+                >
+                  View Report
+                </div>
               </div>
               
               <div className="chart-container">
@@ -228,10 +269,275 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                 <div className="chart-label">of coupons are being used</div>
                 <div className="chart-sub-label">Total coupons: {coupons.length}</div>
               </div>
+              
+              <div className="coupon-list">
+                {coupons.slice(0, 3).map((coupon, index) => (
+                  <div 
+                    key={index} 
+                    className="coupon-item"
+                    onClick={() => openDetailView('coupon', coupon)}
+                  >
+                    <div className="coupon-info">
+                      <div className="coupon-code">{coupon.code || `CODE${index + 1}`}</div>
+                      <div className="coupon-discount">{coupon.discount || '10%'} off</div>
+                    </div>
+                    <div className="coupon-status">
+                      {coupon.isActive ? (
+                        <FontAwesomeIcon icon={faCheckCircle} className="active-status" />
+                      ) : (
+                        <FontAwesomeIcon icon={faTimesCircle} className="inactive-status" />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* User List */}
+          <div className="data-card">
+            <div className="data-card-header">
+              <div className="data-card-title">Active Users</div>
+              <div 
+                className="view-all-text"
+                onClick={() => setDetailView('users')}
+              >
+                View All
+              </div>
+            </div>
+            
+            <div className="user-list">
+              {users.slice(0, 5).map((user, index) => (
+                <div 
+                  key={index} 
+                  className="user-item"
+                  onClick={() => openDetailView('user', user)}
+                >
+                  <div className="user-avatar">
+                    <FontAwesomeIcon icon={faUser} />
+                  </div>
+                  <div className="user-info">
+                    <div className="user-name">{user.name || `User ${index + 1}`}</div>
+                    <div className="user-email">{user.email || `user${index + 1}@example.com`}</div>
+                  </div>
+                  <div className="user-view">
+                    <FontAwesomeIcon icon={faEye} />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Detail View Overlay */}
+      {detailView && (
+        <div className="detail-overlay">
+          <div className="detail-content">
+            <div className="detail-header">
+              <h2>
+                {detailView === 'user' && 'User Details'}
+                {detailView === 'coupon' && 'Coupon Details'}
+                {detailView === 'transaction' && 'Transaction Details'}
+                {detailView === 'users' && 'All Users'}
+                {detailView === 'coupons' && 'All Coupons'}
+                {detailView === 'transactions' && 'All Transactions'}
+              </h2>
+              <button className="close-detail" onClick={closeDetailView}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+
+            <div className="detail-body">
+              {/* User Detail View */}
+              {detailView === 'user' && selectedItem && (
+                <div className="user-detail">
+                  <div className="detail-avatar">
+                    <FontAwesomeIcon icon={faUser} size="3x" />
+                  </div>
+                  <div className="detail-info">
+                    <div className="info-row">
+                      <span className="info-label">Name:</span>
+                      <span className="info-value">{selectedItem.name || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Email:</span>
+                      <span className="info-value">{selectedItem.email || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Joined:</span>
+                      <span className="info-value">{selectedItem.joinDate || 'Jan 1, 2023'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Status:</span>
+                      <span className="info-value">
+                        <span className="status-badge active">Active</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Coupon Detail View */}
+              {detailView === 'coupon' && selectedItem && (
+                <div className="coupon-detail">
+                  <div className="detail-icon">
+                    <FontAwesomeIcon icon={faTag} size="3x" />
+                  </div>
+                  <div className="detail-info">
+                    <div className="info-row">
+                      <span className="info-label">Code:</span>
+                      <span className="info-value">{selectedItem.code || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Discount:</span>
+                      <span className="info-value">{selectedItem.discount || '10%'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Valid Until:</span>
+                      <span className="info-value">{selectedItem.validUntil || 'Dec 31, 2023'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Status:</span>
+                      <span className="info-value">
+                        {selectedItem.isActive ? (
+                          <span className="status-badge active">Active</span>
+                        ) : (
+                          <span className="status-badge inactive">Inactive</span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Usage Count:</span>
+                      <span className="info-value">{selectedItem.usageCount || '15'}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Transaction Detail View */}
+              {detailView === 'transaction' && selectedItem && (
+                <div className="transaction-detail">
+                  <div className="detail-icon">
+                    <FontAwesomeIcon icon={faCreditCard} size="3x" />
+                  </div>
+                  <div className="detail-info">
+                    <div className="info-row">
+                      <span className="info-label">Transaction ID:</span>
+                      <span className="info-value">{selectedItem.id || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">User:</span>
+                      <span className="info-value">{selectedItem.userName || 'User 1'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Amount:</span>
+                      <span className="info-value">${selectedItem.amount || '0.00'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Date:</span>
+                      <span className="info-value">{selectedItem.date || 'Aug 30, 2023'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Status:</span>
+                      <span className="info-value">
+                        <span className="status-badge completed">Completed</span>
+                      </span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Payment Method:</span>
+                      <span className="info-value">Credit Card</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* All Users View */}
+              {detailView === 'users' && (
+                <div className="all-items-view">
+                  <h3>All Users ({users.length})</h3>
+                  <div className="items-list">
+                    {users.map((user, index) => (
+                      <div 
+                        key={index} 
+                        className="item-row"
+                        onClick={() => openDetailView('user', user)}
+                      >
+                        <div className="user-avatar small">
+                          <FontAwesomeIcon icon={faUser} />
+                        </div>
+                        <div className="item-info">
+                          <div className="item-name">{user.name || `User ${index + 1}`}</div>
+                          <div className="item-sub">{user.email || `user${index + 1}@example.com`}</div>
+                        </div>
+                        <div className="item-action">
+                          <FontAwesomeIcon icon={faEye} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* All Coupons View */}
+              {detailView === 'coupons' && (
+                <div className="all-items-view">
+                  <h3>All Coupons ({coupons.length})</h3>
+                  <div className="items-list">
+                    {coupons.map((coupon, index) => (
+                      <div 
+                        key={index} 
+                        className="item-row"
+                        onClick={() => openDetailView('coupon', coupon)}
+                      >
+                        <div className="item-icon">
+                          <FontAwesomeIcon icon={faTag} />
+                        </div>
+                        <div className="item-info">
+                          <div className="item-name">{coupon.code || `CODE${index + 1}`}</div>
+                          <div className="item-sub">{coupon.discount || '10%'} off</div>
+                        </div>
+                        <div className="item-status">
+                          {coupon.isActive ? (
+                            <span className="status-badge active">Active</span>
+                          ) : (
+                            <span className="status-badge inactive">Inactive</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* All Transactions View */}
+              {detailView === 'transactions' && (
+                <div className="all-items-view">
+                  <h3>All Transactions ({transactions.length})</h3>
+                  <div className="items-list">
+                    {transactions.map((transaction, index) => (
+                      <div 
+                        key={index} 
+                        className="item-row"
+                        onClick={() => openDetailView('transaction', transaction)}
+                      >
+                        <div className="item-icon">
+                          <FontAwesomeIcon icon={faCreditCard} />
+                        </div>
+                        <div className="item-info">
+                          <div className="item-name">Transaction #{index + 1}</div>
+                          <div className="item-sub">{transaction.userName || `User ${index + 1}`}</div>
+                        </div>
+                        <div className="item-amount">${transaction.amount || '0.00'}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
