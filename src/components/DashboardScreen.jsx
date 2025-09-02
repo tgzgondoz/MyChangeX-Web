@@ -5,7 +5,6 @@ import {
   faBars, 
   faSearch, 
   faBell, 
-  faShieldAlt,
   faUsers,
   faTicketAlt,
   faExchangeAlt,
@@ -18,16 +17,9 @@ import {
   faTimes,
   faEye,
   faUser,
-  faTag,
-  faCreditCard,
-  faCalendar,
-  faPercentage,
   faCheckCircle,
   faTimesCircle,
-  faGift,
-  faPaperPlane,
-  faHistory,
-  faQrcode
+  faCreditCard
 } from '@fortawesome/free-solid-svg-icons';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, off } from 'firebase/database';
@@ -55,6 +47,8 @@ const DashboardScreen = () => {
   const [detailView, setDetailView] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [dataLoading, setDataLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
   
   // State for real-time data
   const [users, setUsers] = useState([]);
@@ -126,6 +120,26 @@ const DashboardScreen = () => {
     };
   }, []);
 
+  // Filter data based on search query
+  const filteredUsers = users.filter(user => 
+    user.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.phoneNumber?.includes(searchQuery)
+  );
+
+  const filteredCoupons = coupons.filter(coupon => 
+    coupon.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    coupon.senderNumber?.includes(searchQuery) ||
+    coupon.receiverNumber?.includes(searchQuery)
+  );
+
+  const filteredTransactions = transactions.filter(transaction => 
+    transaction.from?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    transaction.coupon_code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    transaction.amount?.toString().includes(searchQuery)
+  );
+
   // Calculate statistics for dashboard
   const totalRevenue = transactions.reduce((sum, transaction) => sum + (transaction.amount || 0), 0);
   const activeCoupons = coupons.filter(coupon => coupon && coupon.status === 'active').length;
@@ -189,13 +203,29 @@ const DashboardScreen = () => {
     setSelectedItem(null);
   };
 
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    if (e.target.value.length > 0) {
+      setIsSearching(true);
+    } else {
+      setIsSearching(false);
+    }
+  };
+
+  // Clear search
+  const clearSearch = () => {
+    setSearchQuery('');
+    setIsSearching(false);
+  };
+
   // Users component
   const Users = () => (
     <div className="scroll-view">
       <div className="content-card">
         <h2>Users Management</h2>
         <div className="user-list">
-          {users.map((user, index) => (
+          {(isSearching ? filteredUsers : users).map((user, index) => (
             <div key={index} className="user-item" onClick={() => openDetailView('user', user)}>
               <div className="user-avatar">
                 <FontAwesomeIcon icon={faUser} />
@@ -209,6 +239,11 @@ const DashboardScreen = () => {
               </div>
             </div>
           ))}
+          {isSearching && filteredUsers.length === 0 && (
+            <div className="empty-state">
+              <div className="empty-state-text">No users found</div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -220,7 +255,7 @@ const DashboardScreen = () => {
       <div className="content-card">
         <h2>Coupons Management</h2>
         <div className="coupon-list">
-          {coupons.map((coupon, index) => (
+          {(isSearching ? filteredCoupons : coupons).map((coupon, index) => (
             <div key={index} className="coupon-item" onClick={() => openDetailView('coupon', coupon)}>
               <div className="coupon-info">
                 <div className="coupon-code">{coupon.code || `CODE${index + 1}`}</div>
@@ -235,6 +270,11 @@ const DashboardScreen = () => {
               </div>
             </div>
           ))}
+          {isSearching && filteredCoupons.length === 0 && (
+            <div className="empty-state">
+              <div className="empty-state-text">No coupons found</div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -245,7 +285,7 @@ const DashboardScreen = () => {
     <div className="scroll-view">
       <div className="content-card">
         <h2>Transactions History</h2>
-        {transactions.map((transaction, index) => (
+        {(isSearching ? filteredTransactions : transactions).map((transaction, index) => (
           <div key={index} className="transaction-item" onClick={() => openDetailView('transaction', transaction)}>
             <div>
               <div className="transaction-user">
@@ -265,6 +305,11 @@ const DashboardScreen = () => {
             </div>
           </div>
         ))}
+        {isSearching && filteredTransactions.length === 0 && (
+          <div className="empty-state">
+            <div className="empty-state-text">No transactions found</div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -307,6 +352,8 @@ const DashboardScreen = () => {
               onClick={() => {
                 setActiveTab(item.id);
                 setSidebarOpen(false);
+                setSearchQuery('');
+                setIsSearching(false);
               }}
             >
               <FontAwesomeIcon 
@@ -330,7 +377,18 @@ const DashboardScreen = () => {
           
           <div className="search-container">
             <FontAwesomeIcon icon={faSearch} size="sm" className="search-icon" />
-            <div className="search-placeholder">Search...</div>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            {searchQuery.length > 0 && (
+              <button className="search-clear" onClick={clearSearch}>
+                <FontAwesomeIcon icon={faTimes} size="sm" />
+              </button>
+            )}
           </div>
           
           <div className="notification-button">
@@ -341,25 +399,6 @@ const DashboardScreen = () => {
         {/* Dashboard Content */}
         {activeTab === 'dashboard' && (
           <div className="scroll-view">
-            {/* Security Warning */}
-            <div className="security-alert">
-              <div className="alert-icon-container">
-                <FontAwesomeIcon icon={faShieldAlt} size="sm" />
-              </div>
-              <div className="alert-content">
-                <div className="alert-title">Security Alert</div>
-                <div className="alert-text">
-                  Your Firebase security rules are set to public. This means anyone can read, modify, or delete your data.
-                </div>
-                <div className="alert-buttons">
-                  <div className="alert-primary-button">
-                    <div className="alert-primary-button-text">Update Security Rules</div>
-                  </div>
-                  <div className="alert-secondary-button-text">Learn More</div>
-                </div>
-              </div>
-            </div>
-
             {/* Stats Overview */}
             <div className="stats-container">
               <div className="stat-card">
