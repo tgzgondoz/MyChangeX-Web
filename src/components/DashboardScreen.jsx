@@ -317,8 +317,8 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                     <FontAwesomeIcon icon={faUser} />
                   </div>
                   <div className="user-info">
-                    <div className="user-name">{user.name || `User ${index + 1}`}</div>
-                    <div className="user-email">{user.email || `user${index + 1}@example.com`}</div>
+                    <div className="user-name">{user.fullName || user.name || `User ${index + 1}`}</div>
+                    <div className="user-email">{user.phoneNumber || user.email || `user${index + 1}@example.com`}</div>
                   </div>
                   <div className="user-view">
                     <FontAwesomeIcon icon={faEye} />
@@ -357,16 +357,16 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                   </div>
                   <div className="detail-info">
                     <div className="info-row">
-                      <span className="info-label">Name:</span>
-                      <span className="info-value">{selectedItem.name || 'N/A'}</span>
+                      <span className="info-label">Full Name:</span>
+                      <span className="info-value">{selectedItem.fullName || selectedItem.name || 'N/A'}</span>
                     </div>
                     <div className="info-row">
-                      <span className="info-label">Email:</span>
-                      <span className="info-value">{selectedItem.email || 'N/A'}</span>
+                      <span className="info-label">Phone Number:</span>
+                      <span className="info-value">{selectedItem.phoneNumber || 'N/A'}</span>
                     </div>
                     <div className="info-row">
-                      <span className="info-label">Joined:</span>
-                      <span className="info-value">{selectedItem.joinDate || 'Jan 1, 2023'}</span>
+                      <span className="info-label">Created At:</span>
+                      <span className="info-value">{selectedItem.createdAt || selectedItem.joinDate || 'N/A'}</span>
                     </div>
                     <div className="info-row">
                       <span className="info-label">Status:</span>
@@ -467,8 +467,8 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                           <FontAwesomeIcon icon={faUser} />
                         </div>
                         <div className="item-info">
-                          <div className="item-name">{user.name || `User ${index + 1}`}</div>
-                          <div className="item-sub">{user.email || `user${index + 1}@example.com`}</div>
+                          <div className="item-name">{user.fullName || user.name || `User ${index + 1}`}</div>
+                          <div className="item-sub">{user.phoneNumber || user.email || `user${index + 1}@example.com`}</div>
                         </div>
                         <div className="item-action">
                           <FontAwesomeIcon icon={faEye} />
