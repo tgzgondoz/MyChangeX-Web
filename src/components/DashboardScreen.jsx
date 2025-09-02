@@ -22,7 +22,10 @@ import {
   faCalendar,
   faPercentage,
   faCheckCircle,
-  faTimesCircle
+  faTimesCircle,
+  faGift,
+  faPaperPlane,
+  faHistory
 } from '@fortawesome/free-solid-svg-icons';
 import './DashboardScreen.css';
 
@@ -34,8 +37,42 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
   
   // Calculate statistics
   const totalRevenue = transactions.reduce((sum, transaction) => sum + (transaction.amount || 0), 0);
-  const activeCoupons = coupons.filter(coupon => coupon && coupon.isActive).length;
+  const activeCoupons = coupons.filter(coupon => coupon && coupon.status === 'active').length;
   const recentTransactions = transactions.slice(0, 5);
+
+  // Format date for display
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch (e) {
+      return dateString;
+    }
+  };
+
+  // Format datetime for display
+  const formatDateTime = (dateString) => {
+    if (!dateString) return 'N/A';
+    
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (e) {
+      return dateString;
+    }
+  };
 
   // Open detail view
   const openDetailView = (type, item) => {
@@ -279,10 +316,10 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                   >
                     <div className="coupon-info">
                       <div className="coupon-code">{coupon.code || `CODE${index + 1}`}</div>
-                      <div className="coupon-discount">{coupon.discount || '10%'} off</div>
+                      <div className="coupon-discount">${coupon.value || coupon.originalAmount || '10.00'}</div>
                     </div>
                     <div className="coupon-status">
-                      {coupon.isActive ? (
+                      {coupon.status === 'redeemed' ? (
                         <FontAwesomeIcon icon={faCheckCircle} className="active-status" />
                       ) : (
                         <FontAwesomeIcon icon={faTimesCircle} className="inactive-status" />
@@ -366,7 +403,7 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                     </div>
                     <div className="info-row">
                       <span className="info-label">Created At:</span>
-                      <span className="info-value">{selectedItem.createdAt || selectedItem.joinDate || 'N/A'}</span>
+                      <span className="info-value">{formatDateTime(selectedItem.createdAt) || 'N/A'}</span>
                     </div>
                     <div className="info-row">
                       <span className="info-label">Status:</span>
@@ -382,7 +419,7 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
               {detailView === 'coupon' && selectedItem && (
                 <div className="coupon-detail">
                   <div className="detail-icon">
-                    <FontAwesomeIcon icon={faTag} size="3x" />
+                    <FontAwesomeIcon icon={faTicketAlt} size="3x" />
                   </div>
                   <div className="detail-info">
                     <div className="info-row">
@@ -390,26 +427,54 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                       <span className="info-value">{selectedItem.code || 'N/A'}</span>
                     </div>
                     <div className="info-row">
-                      <span className="info-label">Discount:</span>
-                      <span className="info-value">{selectedItem.discount || '10%'}</span>
+                      <span className="info-label">Value:</span>
+                      <span className="info-value">${selectedItem.value || selectedItem.originalAmount || '0.00'}</span>
                     </div>
                     <div className="info-row">
-                      <span className="info-label">Valid Until:</span>
-                      <span className="info-value">{selectedItem.validUntil || 'Dec 31, 2023'}</span>
+                      <span className="info-label">Sender:</span>
+                      <span className="info-value">{selectedItem.senderNumber || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Receiver:</span>
+                      <span className="info-value">{selectedItem.receiverNumber || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Generated At:</span>
+                      <span className="info-value">{formatDateTime(selectedItem.generated_at) || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Transferred At:</span>
+                      <span className="info-value">{formatDateTime(selectedItem.transferred_at) || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Redeemed At:</span>
+                      <span className="info-value">{formatDateTime(selectedItem.redeemed_at) || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Redeemed By:</span>
+                      <span className="info-value">{selectedItem.redeemed_by || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Expiry Date:</span>
+                      <span className="info-value">{formatDate(selectedItem.expiry_date) || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Last Updated:</span>
+                      <span className="info-value">{formatDateTime(selectedItem.last_updated) || 'N/A'}</span>
                     </div>
                     <div className="info-row">
                       <span className="info-label">Status:</span>
                       <span className="info-value">
-                        {selectedItem.isActive ? (
+                        {selectedItem.status === 'redeemed' ? (
+                          <span className="status-badge redeemed">Redeemed</span>
+                        ) : selectedItem.status === 'transferred' ? (
+                          <span className="status-badge transferred">Transferred</span>
+                        ) : selectedItem.status === 'active' ? (
                           <span className="status-badge active">Active</span>
                         ) : (
                           <span className="status-badge inactive">Inactive</span>
                         )}
                       </span>
-                    </div>
-                    <div className="info-row">
-                      <span className="info-label">Usage Count:</span>
-                      <span className="info-value">{selectedItem.usageCount || '15'}</span>
                     </div>
                   </div>
                 </div>
@@ -491,14 +556,18 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                         onClick={() => openDetailView('coupon', coupon)}
                       >
                         <div className="item-icon">
-                          <FontAwesomeIcon icon={faTag} />
+                          <FontAwesomeIcon icon={faTicketAlt} />
                         </div>
                         <div className="item-info">
                           <div className="item-name">{coupon.code || `CODE${index + 1}`}</div>
-                          <div className="item-sub">{coupon.discount || '10%'} off</div>
+                          <div className="item-sub">${coupon.value || coupon.originalAmount || '10.00'}</div>
                         </div>
                         <div className="item-status">
-                          {coupon.isActive ? (
+                          {coupon.status === 'redeemed' ? (
+                            <span className="status-badge redeemed">Redeemed</span>
+                          ) : coupon.status === 'transferred' ? (
+                            <span className="status-badge transferred">Transferred</span>
+                          ) : coupon.status === 'active' ? (
                             <span className="status-badge active">Active</span>
                           ) : (
                             <span className="status-badge inactive">Inactive</span>
