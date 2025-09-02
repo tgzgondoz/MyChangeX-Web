@@ -1,3 +1,4 @@
+// DashboardScreen.jsx
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -28,15 +29,104 @@ import {
   faHistory,
   faQrcode
 } from '@fortawesome/free-solid-svg-icons';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, onValue, off } from 'firebase/database';
 import './DashboardScreen.css';
 
-const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAQuU56yKb-BwlTE69gkCzHLaOdByt31nk",
+  authDomain: "coupon-7094e.firebaseapp.com",
+  databaseURL: "https://coupon-7094e-default-rtdb.firebaseio.com",
+  projectId: "coupon-7094e",
+  storageBucket: "coupon-7094e.firebasestorage.app",
+  messagingSenderId: "487809263978",
+  appId: "1:487809263978:web:b1a3859c96d111a4975d13",
+  measurementId: "G-2BMZ50TCQH"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const DashboardScreen = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [detailView, setDetailView] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [dataLoading, setDataLoading] = useState(true);
   
-  // Calculate statistics
+  // State for real-time data
+  const [users, setUsers] = useState([]);
+  const [coupons, setCoupons] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+
+  // Fetch real-time data from Firebase
+  useEffect(() => {
+    setDataLoading(true);
+    
+    // References to Firebase database paths
+    const usersRef = ref(db, 'users');
+    const couponsRef = ref(db, 'coupons');
+    const transactionsRef = ref(db, 'transactions');
+
+    // Set up real-time listeners
+    const unsubscribeUsers = onValue(usersRef, (snapshot) => {
+      const usersData = snapshot.val();
+      if (usersData) {
+        const usersArray = Object.keys(usersData).map(key => ({
+          id: key,
+          ...usersData[key]
+        }));
+        setUsers(usersArray);
+      } else {
+        setUsers([]);
+      }
+    });
+
+    const unsubscribeCoupons = onValue(couponsRef, (snapshot) => {
+      const couponsData = snapshot.val();
+      if (couponsData) {
+        const couponsArray = Object.keys(couponsData).map(key => ({
+          id: key,
+          ...couponsData[key]
+        }));
+        setCoupons(couponsArray);
+      } else {
+        setCoupons([]);
+      }
+    });
+
+    const unsubscribeTransactions = onValue(transactionsRef, (snapshot) => {
+      const transactionsData = snapshot.val();
+      if (transactionsData) {
+        const transactionsArray = Object.keys(transactionsData).map(key => ({
+          id: key,
+          ...transactionsData[key]
+        }));
+        setTransactions(transactionsArray);
+        setDataLoading(false);
+      } else {
+        setTransactions([]);
+        setDataLoading(false);
+      }
+    });
+
+    // Error handling for Firebase listeners
+    const errorHandler = (error) => {
+      console.error('Firebase real-time listener error:', error);
+      setDataLoading(false);
+    };
+
+    // Cleanup function to remove listeners
+    return () => {
+      off(usersRef, 'value', unsubscribeUsers);
+      off(couponsRef, 'value', unsubscribeCoupons);
+      off(transactionsRef, 'value', unsubscribeTransactions);
+    };
+  }, []);
+
+  // Calculate statistics for dashboard
   const totalRevenue = transactions.reduce((sum, transaction) => sum + (transaction.amount || 0), 0);
   const activeCoupons = coupons.filter(coupon => coupon && coupon.status === 'active').length;
   const recentTransactions = transactions.slice(0, 5);
@@ -99,7 +189,87 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
     setSelectedItem(null);
   };
 
-  if (dataLoading) {
+  // Users component
+  const Users = () => (
+    <div className="scroll-view">
+      <div className="content-card">
+        <h2>Users Management</h2>
+        <div className="user-list">
+          {users.map((user, index) => (
+            <div key={index} className="user-item" onClick={() => openDetailView('user', user)}>
+              <div className="user-avatar">
+                <FontAwesomeIcon icon={faUser} />
+              </div>
+              <div className="user-info">
+                <div className="user-name">{user.fullName || user.name || `User ${index + 1}`}</div>
+                <div className="user-email">{user.phoneNumber || user.email || `user${index + 1}@example.com`}</div>
+              </div>
+              <div className="user-view">
+                <FontAwesomeIcon icon={faEye} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Coupons component
+  const Coupons = () => (
+    <div className="scroll-view">
+      <div className="content-card">
+        <h2>Coupons Management</h2>
+        <div className="coupon-list">
+          {coupons.map((coupon, index) => (
+            <div key={index} className="coupon-item" onClick={() => openDetailView('coupon', coupon)}>
+              <div className="coupon-info">
+                <div className="coupon-code">{coupon.code || `CODE${index + 1}`}</div>
+                <div className="coupon-discount">${coupon.value || coupon.originalAmount || '10.00'}</div>
+              </div>
+              <div className="coupon-status">
+                {coupon.status === 'redeemed' ? (
+                  <FontAwesomeIcon icon={faCheckCircle} className="active-status" />
+                ) : (
+                  <FontAwesomeIcon icon={faTimesCircle} className="inactive-status" />
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Transactions component
+  const Transactions = () => (
+    <div className="scroll-view">
+      <div className="content-card">
+        <h2>Transactions History</h2>
+        {transactions.map((transaction, index) => (
+          <div key={index} className="transaction-item" onClick={() => openDetailView('transaction', transaction)}>
+            <div>
+              <div className="transaction-user">
+                {transaction.from || `User ${index + 1}`}
+              </div>
+              <div className="transaction-date">
+                {formatDateTime(transaction.timestamp) || 'N/A'}
+              </div>
+            </div>
+            <div className="transaction-amount">${transaction.amount || '0.00'}</div>
+            <div className="status-badge">
+              <div className="status-text">
+                {transaction.status === 'completed' ? 'Completed' : 
+                transaction.status === 'active' ? 'Active' : 
+                transaction.status || 'Pending'}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (dataLoading && activeTab === 'dashboard') {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
@@ -168,220 +338,242 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
           </div>
         </div>
 
-        <div className="scroll-view">
-          {/* Security Warning */}
-          <div className="security-alert">
-            <div className="alert-icon-container">
-              <FontAwesomeIcon icon={faShieldAlt} size="sm" />
-            </div>
-            <div className="alert-content">
-              <div className="alert-title">Security Alert</div>
-              <div className="alert-text">
-                Your Firebase security rules are set to public. This means anyone can read, modify, or delete your data.
+        {/* Dashboard Content */}
+        {activeTab === 'dashboard' && (
+          <div className="scroll-view">
+            {/* Security Warning */}
+            <div className="security-alert">
+              <div className="alert-icon-container">
+                <FontAwesomeIcon icon={faShieldAlt} size="sm" />
               </div>
-              <div className="alert-buttons">
-                <div className="alert-primary-button">
-                  <div className="alert-primary-button-text">Update Security Rules</div>
+              <div className="alert-content">
+                <div className="alert-title">Security Alert</div>
+                <div className="alert-text">
+                  Your Firebase security rules are set to public. This means anyone can read, modify, or delete your data.
                 </div>
-                <div className="alert-secondary-button-text">Learn More</div>
+                <div className="alert-buttons">
+                  <div className="alert-primary-button">
+                    <div className="alert-primary-button-text">Update Security Rules</div>
+                  </div>
+                  <div className="alert-secondary-button-text">Learn More</div>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Stats Overview */}
-          <div className="stats-container">
-            <div className="stat-card">
-              <div className="stat-content">
-                <div>
-                  <div className="stat-label">Total Users</div>
-                  <div className="stat-value">{users.length}</div>
-                  <div className="stat-trend">
-                    <FontAwesomeIcon icon={faArrowUp} size="xs" />
-                    <div className="positive-trend">12% from last month</div>
+            {/* Stats Overview */}
+            <div className="stats-container">
+              <div className="stat-card">
+                <div className="stat-content">
+                  <div>
+                    <div className="stat-label">Total Users</div>
+                    <div className="stat-value">{users.length}</div>
+                    <div className="stat-trend">
+                      <FontAwesomeIcon icon={faArrowUp} size="xs" />
+                      <div className="positive-trend">12% from last month</div>
+                    </div>
+                  </div>
+                  <div className="stat-icon-container" style={{ backgroundColor: '#dcfce7' }}>
+                    <FontAwesomeIcon icon={faUsers} style={{ color: '#16a34a' }} />
                   </div>
                 </div>
-                <div className="stat-icon-container" style={{ backgroundColor: '#dcfce7' }}>
-                  <FontAwesomeIcon icon={faUsers} style={{ color: '#16a34a' }} />
+              </div>
+              
+              <div className="stat-card">
+                <div className="stat-content">
+                  <div>
+                    <div className="stat-label">Active Coupons</div>
+                    <div className="stat-value">{activeCoupons}</div>
+                    <div className="stat-trend">
+                      <FontAwesomeIcon icon={faArrowUp} size="xs" />
+                      <div className="positive-trend">5% from last week</div>
+                    </div>
+                  </div>
+                  <div className="stat-icon-container" style={{ backgroundColor: '#dbeafe' }}>
+                    <FontAwesomeIcon icon={faTicketAlt} style={{ color: '#2563eb' }} />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="stat-card">
+                <div className="stat-content">
+                  <div>
+                    <div className="stat-label">Transactions</div>
+                    <div className="stat-value">{transactions.length}</div>
+                    <div className="stat-trend">
+                      <FontAwesomeIcon icon={faArrowDown} size="xs" />
+                      <div className="negative-trend">3% from yesterday</div>
+                    </div>
+                  </div>
+                  <div className="stat-icon-container" style={{ backgroundColor: '#f3e8ff' }}>
+                    <FontAwesomeIcon icon={faExchangeAlt} style={{ color: '#7c3aed' }} />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="stat-card">
+                <div className="stat-content">
+                  <div>
+                    <div className="stat-label">Revenue</div>
+                    <div className="stat-value">${totalRevenue.toFixed(2)}</div>
+                    <div className="stat-trend">
+                      <FontAwesomeIcon icon={faArrowUp} size="xs" />
+                      <div className="positive-trend">20% from last month</div>
+                    </div>
+                  </div>
+                  <div className="stat-icon-container" style={{ backgroundColor: '#fef3c7' }}>
+                    <FontAwesomeIcon icon={faDollarSign} style={{ color: '#ca8a04' }} />
+                  </div>
                 </div>
               </div>
             </div>
-            
-            <div className="stat-card">
-              <div className="stat-content">
-                <div>
-                  <div className="stat-label">Active Coupons</div>
-                  <div className="stat-value">{activeCoupons}</div>
-                  <div className="stat-trend">
-                    <FontAwesomeIcon icon={faArrowUp} size="xs" />
-                    <div className="positive-trend">5% from last week</div>
-                  </div>
-                </div>
-                <div className="stat-icon-container" style={{ backgroundColor: '#dbeafe' }}>
-                  <FontAwesomeIcon icon={faTicketAlt} style={{ color: '#2563eb' }} />
-                </div>
-              </div>
-            </div>
-            
-            <div className="stat-card">
-              <div className="stat-content">
-                <div>
-                  <div className="stat-label">Transactions</div>
-                  <div className="stat-value">{transactions.length}</div>
-                  <div className="stat-trend">
-                    <FontAwesomeIcon icon={faArrowDown} size="xs" />
-                    <div className="negative-trend">3% from yesterday</div>
-                  </div>
-                </div>
-                <div className="stat-icon-container" style={{ backgroundColor: '#f3e8ff' }}>
-                  <FontAwesomeIcon icon={faExchangeAlt} style={{ color: '#7c3aed' }} />
-                </div>
-              </div>
-            </div>
-            
-            <div className="stat-card">
-              <div className="stat-content">
-                <div>
-                  <div className="stat-label">Revenue</div>
-                  <div className="stat-value">${totalRevenue.toFixed(2)}</div>
-                  <div className="stat-trend">
-                    <FontAwesomeIcon icon={faArrowUp} size="xs" />
-                    <div className="positive-trend">20% from last month</div>
-                  </div>
-                </div>
-                <div className="stat-icon-container" style={{ backgroundColor: '#fef3c7' }}>
-                  <FontAwesomeIcon icon={faDollarSign} style={{ color: '#ca8a04' }} />
-                </div>
-              </div>
-            </div>
-          </div>
 
-          {/* Charts and Data Section */}
-          <div className="data-container">
-            {/* Recent Transactions */}
+            {/* Charts and Data Section */}
+            <div className="data-container">
+              {/* Recent Transactions */}
+              <div className="data-card">
+                <div className="data-card-header">
+                  <div className="data-card-title">Recent Transactions</div>
+                  <div 
+                    className="view-all-text"
+                    onClick={() => setActiveTab('transactions')}
+                  >
+                    View All
+                  </div>
+                </div>
+                
+                {recentTransactions.length > 0 ? (
+                  recentTransactions.map((transaction, index) => (
+                    <div 
+                      key={index} 
+                      className="transaction-item"
+                      onClick={() => openDetailView('transaction', transaction)}
+                    >
+                      <div>
+                        <div className="transaction-user">
+                          {transaction.from || `User ${index + 1}`}
+                        </div>
+                        <div className="transaction-date">
+                          {formatDateTime(transaction.timestamp) || 'N/A'}
+                        </div>
+                      </div>
+                      <div className="transaction-amount">${transaction.amount || '0.00'}</div>
+                      <div className="status-badge">
+                        <div className="status-text">
+                          {transaction.status === 'completed' ? 'Completed' : 
+                          transaction.status === 'active' ? 'Active' : 
+                          transaction.status || 'Pending'}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="empty-state">
+                    <FontAwesomeIcon icon={faReceipt} size="2x" />
+                    <div className="empty-state-text">No transactions found</div>
+                  </div>
+                )}
+              </div>
+
+              {/* Coupon Usage */}
+              <div className="data-card">
+                <div className="data-card-header">
+                  <div className="data-card-title">Coupon Usage</div>
+                  <div 
+                    className="view-all-text"
+                    onClick={() => setActiveTab('coupons')}
+                  >
+                    View Report
+                  </div>
+                </div>
+                
+                <div className="chart-container">
+                  <div className="pie-chart">
+                    <div className="chart-value-container">
+                      <div className="chart-value">90%</div>
+                    </div>
+                  </div>
+                  <div className="chart-label">of coupons are being used</div>
+                  <div className="chart-sub-label">Total coupons: {coupons.length}</div>
+                </div>
+                
+                <div className="coupon-list">
+                  {coupons.slice(0, 3).map((coupon, index) => (
+                    <div 
+                      key={index} 
+                      className="coupon-item"
+                      onClick={() => openDetailView('coupon', coupon)}
+                    >
+                      <div className="coupon-info">
+                        <div className="coupon-code">{coupon.code || `CODE${index + 1}`}</div>
+                        <div className="coupon-discount">${coupon.value || coupon.originalAmount || '10.00'}</div>
+                      </div>
+                      <div className="coupon-status">
+                        {coupon.status === 'redeemed' ? (
+                          <FontAwesomeIcon icon={faCheckCircle} className="active-status" />
+                        ) : (
+                          <FontAwesomeIcon icon={faTimesCircle} className="inactive-status" />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* User List */}
             <div className="data-card">
               <div className="data-card-header">
-                <div className="data-card-title">Recent Transactions</div>
+                <div className="data-card-title">Active Users</div>
                 <div 
                   className="view-all-text"
-                  onClick={() => setDetailView('transactions')}
+                  onClick={() => setActiveTab('users')}
                 >
                   View All
                 </div>
               </div>
               
-              {recentTransactions.length > 0 ? (
-                recentTransactions.map((transaction, index) => (
+              <div className="user-list">
+                {users.slice(0, 5).map((user, index) => (
                   <div 
                     key={index} 
-                    className="transaction-item"
-                    onClick={() => openDetailView('transaction', transaction)}
+                    className="user-item"
+                    onClick={() => openDetailView('user', user)}
                   >
-                    <div>
-                      <div className="transaction-user">
-                        {transaction.from || `User ${index + 1}`}
-                      </div>
-                      <div className="transaction-date">
-                        {formatDateTime(transaction.timestamp) || 'Aug 30, 2025'}
-                      </div>
+                    <div className="user-avatar">
+                      <FontAwesomeIcon icon={faUser} />
                     </div>
-                    <div className="transaction-amount">${transaction.amount || '0.00'}</div>
-                    <div className="status-badge">
-                      <div className="status-text">
-                        {transaction.status === 'completed' ? 'Completed' : 
-                         transaction.status === 'active' ? 'Active' : 
-                         transaction.status || 'Pending'}
-                      </div>
+                    <div className="user-info">
+                      <div className="user-name">{user.fullName || user.name || `User ${index + 1}`}</div>
+                      <div className="user-email">{user.phoneNumber || user.email || `user${index + 1}@example.com`}</div>
                     </div>
-                  </div>
-                ))
-              ) : (
-                <div className="empty-state">
-                  <FontAwesomeIcon icon={faReceipt} size="2x" />
-                  <div className="empty-state-text">No transactions found</div>
-                </div>
-              )}
-            </div>
-
-            {/* Coupon Usage */}
-            <div className="data-card">
-              <div className="data-card-header">
-                <div className="data-card-title">Coupon Usage</div>
-                <div 
-                  className="view-all-text"
-                  onClick={() => setDetailView('coupons')}
-                >
-                  View Report
-                </div>
-              </div>
-              
-              <div className="chart-container">
-                <div className="pie-chart">
-                  <div className="chart-value-container">
-                    <div className="chart-value">90%</div>
-                  </div>
-                </div>
-                <div className="chart-label">of coupons are being used</div>
-                <div className="chart-sub-label">Total coupons: {coupons.length}</div>
-              </div>
-              
-              <div className="coupon-list">
-                {coupons.slice(0, 3).map((coupon, index) => (
-                  <div 
-                    key={index} 
-                    className="coupon-item"
-                    onClick={() => openDetailView('coupon', coupon)}
-                  >
-                    <div className="coupon-info">
-                      <div className="coupon-code">{coupon.code || `CODE${index + 1}`}</div>
-                      <div className="coupon-discount">${coupon.value || coupon.originalAmount || '10.00'}</div>
-                    </div>
-                    <div className="coupon-status">
-                      {coupon.status === 'redeemed' ? (
-                        <FontAwesomeIcon icon={faCheckCircle} className="active-status" />
-                      ) : (
-                        <FontAwesomeIcon icon={faTimesCircle} className="inactive-status" />
-                      )}
+                    <div className="user-view">
+                      <FontAwesomeIcon icon={faEye} />
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
+        )}
 
-          {/* User List */}
-          <div className="data-card">
-            <div className="data-card-header">
-              <div className="data-card-title">Active Users</div>
-              <div 
-                className="view-all-text"
-                onClick={() => setDetailView('users')}
-              >
-                View All
-              </div>
-            </div>
-            
-            <div className="user-list">
-              {users.slice(0, 5).map((user, index) => (
-                <div 
-                  key={index} 
-                  className="user-item"
-                  onClick={() => openDetailView('user', user)}
-                >
-                  <div className="user-avatar">
-                    <FontAwesomeIcon icon={faUser} />
-                  </div>
-                  <div className="user-info">
-                    <div className="user-name">{user.fullName || user.name || `User ${index + 1}`}</div>
-                    <div className="user-email">{user.phoneNumber || user.email || `user${index + 1}@example.com`}</div>
-                  </div>
-                  <div className="user-view">
-                    <FontAwesomeIcon icon={faEye} />
-                  </div>
-                </div>
-              ))}
+        {/* Users Content */}
+        {activeTab === 'users' && <Users />}
+
+        {/* Coupons Content */}
+        {activeTab === 'coupons' && <Coupons />}
+
+        {/* Transactions Content */}
+        {activeTab === 'transactions' && <Transactions />}
+
+        {/* Settings Content */}
+        {activeTab === 'settings' && (
+          <div className="scroll-view">
+            <div className="content-card">
+              <h2>Settings</h2>
+              <p>Settings content will go here.</p>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Detail View Overlay */}
@@ -393,9 +585,6 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                 {detailView === 'user' && 'User Details'}
                 {detailView === 'coupon' && 'Coupon Details'}
                 {detailView === 'transaction' && 'Transaction Details'}
-                {detailView === 'users' && 'All Users'}
-                {detailView === 'coupons' && 'All Coupons'}
-                {detailView === 'transactions' && 'All Transactions'}
               </h2>
               <button className="close-detail" onClick={closeDetailView}>
                 <FontAwesomeIcon icon={faTimes} />
@@ -419,13 +608,19 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                       <span className="info-value">{selectedItem.phoneNumber || 'N/A'}</span>
                     </div>
                     <div className="info-row">
+                      <span className="info-label">Email:</span>
+                      <span className="info-value">{selectedItem.email || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
                       <span className="info-label">Created At:</span>
                       <span className="info-value">{formatDateTime(selectedItem.createdAt) || 'N/A'}</span>
                     </div>
                     <div className="info-row">
                       <span className="info-label">Status:</span>
                       <span className="info-value">
-                        <span className="status-badge active">Active</span>
+                        <span className={`status-badge ${selectedItem.status || 'active'}`}>
+                          {selectedItem.status || 'Active'}
+                        </span>
                       </span>
                     </div>
                   </div>
@@ -559,108 +754,11 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                   </div>
                 </div>
               )}
-
-              {/* All Users View */}
-              {detailView === 'users' && (
-                <div className="all-items-view">
-                  <h3>All Users ({users.length})</h3>
-                  <div className="items-list">
-                    {users.map((user, index) => (
-                      <div 
-                        key={index} 
-                        className="item-row"
-                        onClick={() => openDetailView('user', user)}
-                      >
-                        <div className="user-avatar small">
-                          <FontAwesomeIcon icon={faUser} />
-                        </div>
-                        <div className="item-info">
-                          <div className="item-name">{user.fullName || user.name || `User ${index + 1}`}</div>
-                          <div className="item-sub">{user.phoneNumber || user.email || `user${index + 1}@example.com`}</div>
-                        </div>
-                        <div className="item-action">
-                          <FontAwesomeIcon icon={faEye} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* All Coupons View */}
-              {detailView === 'coupons' && (
-                <div className="all-items-view">
-                  <h3>All Coupons ({coupons.length})</h3>
-                  <div className="items-list">
-                    {coupons.map((coupon, index) => (
-                      <div 
-                        key={index} 
-                        className="item-row"
-                        onClick={() => openDetailView('coupon', coupon)}
-                      >
-                        <div className="item-icon">
-                          <FontAwesomeIcon icon={faTicketAlt} />
-                        </div>
-                        <div className="item-info">
-                          <div className="item-name">{coupon.code || `CODE${index + 1}`}</div>
-                          <div className="item-sub">${coupon.value || coupon.originalAmount || '10.00'}</div>
-                        </div>
-                        <div className="item-status">
-                          {coupon.status === 'redeemed' ? (
-                            <span className="status-badge redeemed">Redeemed</span>
-                          ) : coupon.status === 'transferred' ? (
-                            <span className="status-badge transferred">Transferred</span>
-                          ) : coupon.status === 'active' ? (
-                            <span className="status-badge active">Active</span>
-                          ) : (
-                            <span className="status-badge inactive">Inactive</span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* All Transactions View */}
-              {detailView === 'transactions' && (
-                <div className="all-items-view">
-                  <h3>All Transactions ({transactions.length})</h3>
-                  <div className="items-list">
-                    {transactions.map((transaction, index) => (
-                      <div 
-                        key={index} 
-                        className="item-row"
-                        onClick={() => openDetailView('transaction', transaction)}
-                      >
-                        <div className="item-icon">
-                          <FontAwesomeIcon icon={faCreditCard} />
-                        </div>
-                        <div className="item-info">
-                          <div className="item-name">Transaction #{index + 1}</div>
-                          <div className="item-sub">{transaction.from || `User ${index + 1}`}</div>
-                        </div>
-                        <div className="item-amount">${transaction.amount || '0.00'}</div>
-                        <div className="item-status">
-                          {transaction.status === 'completed' ? (
-                            <span className="status-badge completed">Completed</span>
-                          ) : transaction.status === 'active' ? (
-                            <span className="status-badge active">Active</span>
-                          ) : (
-                            <span className="status-badge inactive">Pending</span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
       )}
     </div>
-    
   );
 };
 
