@@ -25,7 +25,8 @@ import {
   faTimesCircle,
   faGift,
   faPaperPlane,
-  faHistory
+  faHistory,
+  faQrcode
 } from '@fortawesome/free-solid-svg-icons';
 import './DashboardScreen.css';
 
@@ -72,6 +73,18 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
     } catch (e) {
       return dateString;
     }
+  };
+
+  // Get transaction type label
+  const getTransactionTypeLabel = (type) => {
+    const typeMap = {
+      'coupon_generated': 'Coupon Generated',
+      'coupon_transferred': 'Coupon Transferred',
+      'coupon_redeemed': 'Coupon Redeemed',
+      'payment': 'Payment',
+      'refund': 'Refund'
+    };
+    return typeMap[type] || type || 'N/A';
   };
 
   // Open detail view
@@ -265,15 +278,19 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                   >
                     <div>
                       <div className="transaction-user">
-                        {transaction.userName || `User ${index + 1}`}
+                        {transaction.from || `User ${index + 1}`}
                       </div>
                       <div className="transaction-date">
-                        {transaction.date || 'Aug 30, 2025'}
+                        {formatDateTime(transaction.timestamp) || 'Aug 30, 2025'}
                       </div>
                     </div>
                     <div className="transaction-amount">${transaction.amount || '0.00'}</div>
                     <div className="status-badge">
-                      <div className="status-text">Completed</div>
+                      <div className="status-text">
+                        {transaction.status === 'completed' ? 'Completed' : 
+                         transaction.status === 'active' ? 'Active' : 
+                         transaction.status || 'Pending'}
+                      </div>
                     </div>
                   </div>
                 ))
@@ -492,26 +509,52 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                       <span className="info-value">{selectedItem.id || 'N/A'}</span>
                     </div>
                     <div className="info-row">
-                      <span className="info-label">User:</span>
-                      <span className="info-value">{selectedItem.userName || 'User 1'}</span>
+                      <span className="info-label">From:</span>
+                      <span className="info-value">{selectedItem.from || 'N/A'}</span>
                     </div>
                     <div className="info-row">
                       <span className="info-label">Amount:</span>
                       <span className="info-value">${selectedItem.amount || '0.00'}</span>
                     </div>
                     <div className="info-row">
-                      <span className="info-label">Date:</span>
-                      <span className="info-value">{selectedItem.date || 'Aug 30, 2023'}</span>
+                      <span className="info-label">Coupon Code:</span>
+                      <span className="info-value">{selectedItem.coupon_code || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Coupon Value:</span>
+                      <span className="info-value">${selectedItem.coupon_value || '0.00'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Transaction Type:</span>
+                      <span className="info-value">{getTransactionTypeLabel(selectedItem.transaction_type)}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Timestamp:</span>
+                      <span className="info-value">{formatDateTime(selectedItem.timestamp) || 'N/A'}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Coupon Generated:</span>
+                      <span className="info-value">
+                        {selectedItem.coupon_generated ? (
+                          <span className="status-badge active">Yes</span>
+                        ) : (
+                          <span className="status-badge inactive">No</span>
+                        )}
+                      </span>
                     </div>
                     <div className="info-row">
                       <span className="info-label">Status:</span>
                       <span className="info-value">
-                        <span className="status-badge completed">Completed</span>
+                        {selectedItem.status === 'completed' ? (
+                          <span className="status-badge completed">Completed</span>
+                        ) : selectedItem.status === 'active' ? (
+                          <span className="status-badge active">Active</span>
+                        ) : selectedItem.status === 'failed' ? (
+                          <span className="status-badge inactive">Failed</span>
+                        ) : (
+                          <span className="status-badge inactive">Pending</span>
+                        )}
                       </span>
-                    </div>
-                    <div className="info-row">
-                      <span className="info-label">Payment Method:</span>
-                      <span className="info-value">Credit Card</span>
                     </div>
                   </div>
                 </div>
@@ -595,9 +638,18 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
                         </div>
                         <div className="item-info">
                           <div className="item-name">Transaction #{index + 1}</div>
-                          <div className="item-sub">{transaction.userName || `User ${index + 1}`}</div>
+                          <div className="item-sub">{transaction.from || `User ${index + 1}`}</div>
                         </div>
                         <div className="item-amount">${transaction.amount || '0.00'}</div>
+                        <div className="item-status">
+                          {transaction.status === 'completed' ? (
+                            <span className="status-badge completed">Completed</span>
+                          ) : transaction.status === 'active' ? (
+                            <span className="status-badge active">Active</span>
+                          ) : (
+                            <span className="status-badge inactive">Pending</span>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -608,6 +660,7 @@ const DashboardScreen = ({ users, coupons, transactions, dataLoading }) => {
         </div>
       )}
     </div>
+    
   );
 };
 
