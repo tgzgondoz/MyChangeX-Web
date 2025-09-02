@@ -438,3 +438,294 @@
     width: 85%;
   }
 }
+
+/* Add these styles to your existing DashboardScreen.css */
+
+/* Detail View Overlay */
+.detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.detail-content {
+  background-color: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.close-detail {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #999;
+}
+
+.close-detail:hover {
+  color: #333;
+}
+
+.detail-body {
+  padding: 20px;
+}
+
+/* User, Coupon, Transaction Detail Styles */
+.user-detail,
+.coupon-detail,
+.transaction-detail {
+  text-align: center;
+}
+
+.detail-avatar,
+.detail-icon {
+  margin-bottom: 20px;
+  color: #4361ee;
+}
+
+.detail-info {
+  text-align: left;
+}
+
+.info-row {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.info-label {
+  font-weight: 600;
+  width: 140px;
+  color: #666;
+}
+
+.info-value {
+  flex: 1;
+}
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-badge.active {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.status-badge.inactive {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.status-badge.completed {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+/* All Items View */
+.all-items-view h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.items-list {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.item-row:hover {
+  background-color: #f9fafb;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  color: #6c757d;
+}
+
+.user-avatar.small {
+  width: 36px;
+  height: 36px;
+  font-size: 0.9rem;
+}
+
+.item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  color: #6c757d;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.item-sub {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.item-action {
+  color: #6c757d;
+}
+
+.item-status {
+  margin-left: auto;
+}
+
+.item-amount {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Coupon List */
+.coupon-list {
+  margin-top: 20px;
+}
+
+.coupon-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.coupon-item:hover {
+  background-color: #e9ecef;
+}
+
+.coupon-info {
+  flex: 1;
+}
+
+.coupon-code {
+  font-weight: 600;
+  color: #333;
+}
+
+.coupon-discount {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.coupon-status .active-status {
+  color: #16a34a;
+}
+
+.coupon-status .inactive-status {
+  color: #dc2626;
+}
+
+/* User List */
+.user-list {
+  margin-top: 10px;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.user-item:hover {
+  background-color: #f9fafb;
+}
+
+.user-info {
+  flex: 1;
+  margin-left: 12px;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.user-email {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.user-view {
+  color: #6c757d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .detail-content {
+    margin: 0;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  
+  .info-row {
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .info-label {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
