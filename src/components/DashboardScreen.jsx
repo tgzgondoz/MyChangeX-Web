@@ -1,4 +1,3 @@
-// DashboardScreen.jsx
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -23,6 +22,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, off } from 'firebase/database';
+import Users from './Users';
+import Coupons from './Coupons';
+import Transactions from './Transactions';
 import './DashboardScreen.css';
 
 // Firebase configuration
@@ -120,26 +122,6 @@ const DashboardScreen = () => {
     };
   }, []);
 
-  // Filter data based on search query
-  const filteredUsers = users.filter(user => 
-    user.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.phoneNumber?.includes(searchQuery)
-  );
-
-  const filteredCoupons = coupons.filter(coupon => 
-    coupon.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    coupon.senderNumber?.includes(searchQuery) ||
-    coupon.receiverNumber?.includes(searchQuery)
-  );
-
-  const filteredTransactions = transactions.filter(transaction => 
-    transaction.from?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    transaction.coupon_code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    transaction.amount?.toString().includes(searchQuery)
-  );
-
   // Calculate statistics for dashboard
   const totalRevenue = transactions.reduce((sum, transaction) => sum + (transaction.amount || 0), 0);
   const activeCoupons = coupons.filter(coupon => coupon && coupon.status === 'active').length;
@@ -218,101 +200,6 @@ const DashboardScreen = () => {
     setSearchQuery('');
     setIsSearching(false);
   };
-
-  // Users component
-  const Users = () => (
-    <div className="scroll-view">
-      <div className="content-card">
-        <h2>Users Management</h2>
-        <div className="user-list">
-          {(isSearching ? filteredUsers : users).map((user, index) => (
-            <div key={index} className="user-item" onClick={() => openDetailView('user', user)}>
-              <div className="user-avatar">
-                <FontAwesomeIcon icon={faUser} />
-              </div>
-              <div className="user-info">
-                <div className="user-name">{user.fullName || user.name || `User ${index + 1}`}</div>
-                <div className="user-email">{user.phoneNumber || user.email || `user${index + 1}@example.com`}</div>
-              </div>
-              <div className="user-view">
-                <FontAwesomeIcon icon={faEye} />
-              </div>
-            </div>
-          ))}
-          {isSearching && filteredUsers.length === 0 && (
-            <div className="empty-state">
-              <div className="empty-state-text">No users found</div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
-  // Coupons component
-  const Coupons = () => (
-    <div className="scroll-view">
-      <div className="content-card">
-        <h2>Coupons Management</h2>
-        <div className="coupon-list">
-          {(isSearching ? filteredCoupons : coupons).map((coupon, index) => (
-            <div key={index} className="coupon-item" onClick={() => openDetailView('coupon', coupon)}>
-              <div className="coupon-info">
-                <div className="coupon-code">{coupon.code || `CODE${index + 1}`}</div>
-                <div className="coupon-discount">${coupon.value || coupon.originalAmount || '10.00'}</div>
-              </div>
-              <div className="coupon-status">
-                {coupon.status === 'redeemed' ? (
-                  <FontAwesomeIcon icon={faCheckCircle} className="active-status" />
-                ) : (
-                  <FontAwesomeIcon icon={faTimesCircle} className="inactive-status" />
-                )}
-              </div>
-            </div>
-          ))}
-          {isSearching && filteredCoupons.length === 0 && (
-            <div className="empty-state">
-              <div className="empty-state-text">No coupons found</div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
-  // Transactions component
-  const Transactions = () => (
-    <div className="scroll-view">
-      <div className="content-card">
-        <h2>Transactions History</h2>
-        {(isSearching ? filteredTransactions : transactions).map((transaction, index) => (
-          <div key={index} className="transaction-item" onClick={() => openDetailView('transaction', transaction)}>
-            <div>
-              <div className="transaction-user">
-                {transaction.from || `User ${index + 1}`}
-              </div>
-              <div className="transaction-date">
-                {formatDateTime(transaction.timestamp) || 'N/A'}
-              </div>
-            </div>
-            <div className="transaction-amount">${transaction.amount || '0.00'}</div>
-            <div className="status-badge">
-              <div className="status-text">
-                {transaction.status === 'completed' ? 'Completed' : 
-                transaction.status === 'active' ? 'Active' : 
-                transaction.status || 'Pending'}
-              </div>
-            </div>
-          </div>
-        ))}
-        {isSearching && filteredTransactions.length === 0 && (
-          <div className="empty-state">
-            <div className="empty-state-text">No transactions found</div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
 
   if (dataLoading && activeTab === 'dashboard') {
     return (
@@ -596,13 +483,38 @@ const DashboardScreen = () => {
         )}
 
         {/* Users Content */}
-        {activeTab === 'users' && <Users />}
+        {activeTab === 'users' && (
+          <Users 
+            users={users}
+            searchQuery={searchQuery}
+            isSearching={isSearching}
+            openDetailView={openDetailView}
+            formatDateTime={formatDateTime}
+          />
+        )}
 
         {/* Coupons Content */}
-        {activeTab === 'coupons' && <Coupons />}
+        {activeTab === 'coupons' && (
+          <Coupons 
+            coupons={coupons}
+            searchQuery={searchQuery}
+            isSearching={isSearching}
+            openDetailView={openDetailView}
+            formatDateTime={formatDateTime}
+          />
+        )}
 
         {/* Transactions Content */}
-        {activeTab === 'transactions' && <Transactions />}
+        {activeTab === 'transactions' && (
+          <Transactions 
+            transactions={transactions}
+            searchQuery={searchQuery}
+            isSearching={isSearching}
+            openDetailView={openDetailView}
+            formatDateTime={formatDateTime}
+            getTransactionTypeLabel={getTransactionTypeLabel}
+          />
+        )}
 
         {/* Settings Content */}
         {activeTab === 'settings' && (
