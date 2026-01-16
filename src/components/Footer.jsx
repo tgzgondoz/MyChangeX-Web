@@ -2,19 +2,18 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="border-t border-gray-800 py-8 px-12">
+    <footer className="border-t border-gray-200 py-8 px-12 bg-white">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg"></div>
-          <span className="text-lg font-bold">MyChangeX</span>
+          <span className="text-lg font-bold text-black">MyChangeX</span>
         </div>
-        <div className="text-gray-400">
-          © 2024 MyChangeX. The Future of Money is Ours.
+        <div className="text-gray-600">
+          © 2026 MyChangeX. The Future of Money is Ours.
         </div>
         <div className="flex space-x-4">
-          <a href="#" className="text-gray-400 hover:text-white">Twitter</a>
-          <a href="#" className="text-gray-400 hover:text-white">LinkedIn</a>
-          <a href="#" className="text-gray-400 hover:text-white">Instagram</a>
+          <a href="#" className="text-gray-600 hover:text-[#0136c0] transition">Twitter</a>
+          <a href="#" className="text-gray-600 hover:text-[#0136c0] transition">LinkedIn</a>
+          <a href="#" className="text-gray-600 hover:text-[#0136c0] transition">Instagram</a>
         </div>
       </div>
     </footer>
