@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import Header from './Header';
-
+import Footer from './Footer';
 
 // Card Icons - Export these so Header can use WalletIcon
 export const CardIcon = () => (
@@ -37,42 +37,13 @@ export const ScanIcon = () => (
 );
 
 const MyChangeXFullScreen = () => {
-  const [activeCard, setActiveCard] = useState(0);
-  const [balance, setBalance] = useState(1250.75);
+  const [activeScreen, setActiveScreen] = useState(0); // 0: splash, 1: home, 2: receive
+  const [balance, setBalance] = useState(0.77);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [loading, setLoading] = useState(true);
   const textContainerRef = useRef(null);
   const phoneRef = useRef(null);
   const controls = useAnimation();
-
-  const cards = [
-    { 
-      id: 1, 
-      type: 'Primary Card', 
-      lastFour: '4234', 
-      color: 'bg-gradient-to-br from-blue-600 to-indigo-700',
-      holder: 'JOHN DOE',
-      expires: '08/26',
-      balance: 850.25
-    },
-    { 
-      id: 2, 
-      type: 'Savings Card', 
-      lastFour: '5678', 
-      color: 'bg-gradient-to-br from-emerald-600 to-green-700',
-      holder: 'JOHN DOE',
-      expires: '11/27',
-      balance: 400.50
-    },
-    { 
-      id: 3, 
-      type: 'Business Card', 
-      lastFour: '9012', 
-      color: 'bg-gradient-to-br from-purple-600 to-pink-700',
-      holder: 'JOHN DOE',
-      expires: '05/26',
-      balance: 0
-    },
-  ];
 
   const features = [
     {
@@ -101,20 +72,6 @@ const MyChangeXFullScreen = () => {
     }
   ];
 
-  const transactions = [
-    { id: 1, merchant: 'SuperMart', amount: -45.60, time: 'Today, 10:30 AM', icon: '🛒', type: 'Grocery' },
-    { id: 2, merchant: 'Fuel Station', amount: -32.15, time: 'Today, 09:15 AM', icon: '⛽', type: 'Transport' },
-    { id: 3, merchant: 'John Doe', amount: 150.00, time: 'Yesterday, 02:45 PM', icon: '👤', type: 'Personal' },
-    { id: 4, merchant: 'Coffee Shop', amount: -8.50, time: 'Yesterday, 08:30 AM', icon: '☕', type: 'Food' },
-  ];
-
-  const quickActions = [
-    { icon: <SendIcon />, label: 'Send', action: 'send' },
-    { icon: <ScanIcon />, label: 'Scan', action: 'scan' },
-    { icon: <CardIcon />, label: 'Cards', action: 'cards' },
-    { icon: <WalletIcon />, label: 'Wallet', action: 'wallet' },
-  ];
-
   useEffect(() => {
     const handleScroll = () => {
       if (textContainerRef.current) {
@@ -122,6 +79,10 @@ const MyChangeXFullScreen = () => {
         const scrollHeight = textContainerRef.current.scrollHeight - textContainerRef.current.clientHeight;
         const progress = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
         setScrollProgress(progress);
+        
+        // Change phone screen based on scroll progress
+        const screenIndex = Math.floor(progress * 2.99); // 0, 1, or 2
+        setActiveScreen(screenIndex);
         
         // Animate phone based on scroll
         controls.start({
@@ -138,25 +99,144 @@ const MyChangeXFullScreen = () => {
     }
   }, [controls]);
 
-  const handleCardAction = (action) => {
-    switch(action) {
-      case 'tap':
-        // Simulate tap to pay
-        if (phoneRef.current) {
-          phoneRef.current.classList.add('ring-4', 'ring-green-400');
-          setTimeout(() => {
-            phoneRef.current.classList.remove('ring-4', 'ring-green-400');
-          }, 500);
-        }
-        break;
-      case 'flip':
-        // Simulate card flip
-        setActiveCard((prev) => (prev + 1) % cards.length);
-        break;
-      default:
-        break;
+  useEffect(() => {
+    // Simulate loading for splash screen
+    if (activeScreen === 0) {
+      setLoading(true);
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+      return () => clearTimeout(timer);
     }
-  };
+  }, [activeScreen]);
+
+  const renderSplashScreen = () => (
+    <div className="h-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-black">
+      <motion.div
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="text-center"
+      >
+        <h1 className="text-4xl font-bold mb-4">MyChangeX</h1>
+        <div className="flex justify-center space-x-2 mt-8">
+          <motion.div
+            animate={{ opacity: loading ? 1 : 0 }}
+            className="h-2 w-2 bg-blue-500 rounded-full"
+          />
+          <motion.div
+            animate={{ opacity: loading ? 0.6 : 0 }}
+            className="h-2 w-2 bg-blue-500 rounded-full"
+          />
+          <motion.div
+            animate={{ opacity: loading ? 0.3 : 0 }}
+            className="h-2 w-2 bg-blue-500 rounded-full"
+          />
+        </div>
+        {!loading && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-8"
+          >
+            <p className="text-gray-400">Loading...</p>
+          </motion.div>
+        )}
+      </motion.div>
+    </div>
+  );
+
+  const renderHomeScreen = () => (
+    <div className="h-full bg-gradient-to-b from-gray-900 to-black p-6">
+      {/* Header with user info */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold">Tatenda</h2>
+        <p className="text-gray-400">+263 78 324 2506</p>
+      </div>
+
+      {/* Balance Section */}
+      <div className="bg-gray-800/50 rounded-2xl p-6 mb-6">
+        <div className="flex items-center mb-2">
+          <input 
+            type="checkbox" 
+            className="mr-3 w-5 h-5 rounded-full border-2 border-gray-600"
+            defaultChecked={false}
+          />
+          <span className="text-gray-300">Total Balance</span>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-4xl font-bold">${balance.toFixed(2)}</h3>
+            <p className="text-gray-400 text-sm">USD</p>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+            <span className="text-sm text-gray-400">Updated</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Send/Receive Buttons */}
+      <div className="flex space-x-4 mb-8">
+        <button className="flex-1 py-4 bg-blue-600 rounded-xl font-semibold hover:bg-blue-700 transition">
+          Send
+        </button>
+        <button className="flex-1 py-4 border border-gray-600 rounded-xl font-semibold hover:bg-gray-800 transition">
+          Receive
+        </button>
+      </div>
+
+      {/* Spend Your Change Section */}
+      <div className="bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-2xl p-6 border border-blue-500/20">
+        <h3 className="text-xl font-bold mb-2">Spend Your Change</h3>
+        <p className="text-gray-300 mb-6">
+          To pay for bills, airtime, and event tickets
+        </p>
+        <button className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl font-semibold hover:opacity-90 transition">
+          Spend Now
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderReceiveScreen = () => (
+    <div className="h-full bg-gradient-to-b from-gray-900 to-black p-6">
+      <h2 className="text-2xl font-bold mb-8 text-center">Receive Coupons</h2>
+      
+      {/* QR Code Container */}
+      <div className="bg-white p-8 rounded-2xl mb-6">
+        <div className="aspect-square bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center">
+          {/* Simulated QR Code Pattern */}
+          <div className="grid grid-cols-9 gap-1">
+            {Array.from({ length: 81 }).map((_, i) => (
+              <div
+                key={i}
+                className={`w-3 h-3 rounded-sm ${
+                  Math.random() > 0.5 ? 'bg-black' : 'bg-transparent'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      <p className="text-center text-gray-300 mb-6">
+        SCAN THIS CODE TO RECEIVE COUPONS
+      </p>
+      
+      <div className="bg-gray-800/50 rounded-xl p-4 mb-8">
+        <p className="text-center text-gray-400">
+          Hold this code to the scanner
+        </p>
+      </div>
+      
+      <button className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl font-semibold hover:opacity-90 transition">
+        View Transactions
+      </button>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white overflow-hidden">
@@ -274,126 +354,24 @@ const MyChangeXFullScreen = () => {
               </div>
 
               {/* Phone Screen Content */}
-              <div className="pt-16 h-full overflow-y-auto scrollbar-hide">
-                {/* Balance Card */}
-                <div className="p-6">
-                  <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 shadow-xl">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <p className="text-blue-200 text-sm">MyChangeX Balance</p>
-                        <h2 className="text-3xl font-bold mt-2">${balance.toFixed(2)}</h2>
-                        <p className="text-blue-200 text-sm mt-1">Available to spend</p>
-                      </div>
-                      <div className="bg-white/20 p-3 rounded-xl">
-                        <WalletIcon />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Active Card Display */}
-                <div className="px-6 mb-6">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold">Your Cards</h3>
-                    <button 
-                      onClick={() => handleCardAction('flip')}
-                      className="text-sm text-blue-400 hover:text-blue-300"
-                    >
-                      Next Card →
-                    </button>
-                  </div>
-                  
-                  <motion.div
-                    key={activeCard}
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className={`${cards[activeCard].color} rounded-2xl p-6 shadow-xl`}
-                  >
-                    <div className="flex justify-between items-start mb-8">
-                      <div>
-                        <p className="text-white/80 text-sm">{cards[activeCard].type}</p>
-                        <div className="flex items-center mt-4 space-x-2">
-                          <div className="text-2xl">••••</div>
-                          <div className="text-2xl">••••</div>
-                          <div className="text-2xl">••••</div>
-                          <div className="text-2xl font-bold">{cards[activeCard].lastFour}</div>
-                        </div>
-                      </div>
-                      <div className="bg-white/20 p-3 rounded-xl">
-                        <CardIcon />
-                      </div>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="text-white/80 text-xs">Card Holder</p>
-                        <p className="font-medium">{cards[activeCard].holder}</p>
-                      </div>
-                      <div>
-                        <p className="text-white/80 text-xs">Expires</p>
-                        <p className="font-medium">{cards[activeCard].expires}</p>
-                      </div>
-                      <div className="w-12 h-8 bg-white/30 rounded-lg"></div>
-                    </div>
-                    
-                    <button 
-                      onClick={() => handleCardAction('tap')}
-                      className="w-full mt-6 py-3 bg-white/20 rounded-xl font-semibold hover:bg-white/30 transition"
-                    >
-                      💳 Tap to Pay
-                    </button>
-                  </motion.div>
-                </div>
-
-                {/* Quick Actions */}
-                <div className="px-6 mb-6">
-                  <div className="grid grid-cols-4 gap-3">
-                    {quickActions.map((action, index) => (
-                      <button
-                        key={index}
-                        className="flex flex-col items-center p-3 bg-gray-800/50 rounded-xl hover:bg-gray-700/50 transition"
-                      >
-                        <div className="text-blue-400 mb-2">
-                          {action.icon}
-                        </div>
-                        <span className="text-sm">{action.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Recent Transactions */}
-                <div className="px-6">
-                  <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
-                  <div className="space-y-3">
-                    {transactions.map((transaction) => (
-                      <div key={transaction.id} className="flex items-center justify-between p-3 bg-gray-800/30 rounded-xl hover:bg-gray-700/30 transition">
-                        <div className="flex items-center">
-                          <div className="w-10 h-10 bg-gray-700/50 rounded-lg flex items-center justify-center mr-3">
-                            <span className="text-lg">{transaction.icon}</span>
-                          </div>
-                          <div>
-                            <p className="font-medium">{transaction.merchant}</p>
-                            <p className="text-sm text-gray-400">{transaction.type}</p>
-                          </div>
-                        </div>
-                        <div className={`font-semibold ${transaction.amount > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                          {transaction.amount > 0 ? '+' : ''}${Math.abs(transaction.amount).toFixed(2)}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              <div className="pt-16 h-full overflow-hidden">
+                <motion.div
+                  key={activeScreen}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="h-full"
+                >
+                  {activeScreen === 0 && renderSplashScreen()}
+                  {activeScreen === 1 && renderHomeScreen()}
+                  {activeScreen === 2 && renderReceiveScreen()}
+                </motion.div>
               </div>
 
               {/* Phone Home Indicator */}
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-white/30 rounded-full"></div>
             </div>
-
-            {/* Floating Action Button */}
-            <button className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform">
-              <ScanIcon />
-            </button>
 
             {/* Scroll Indicator */}
             <div className="absolute -left-20 top-1/2 transform -translate-y-1/2">
@@ -407,12 +385,35 @@ const MyChangeXFullScreen = () => {
                 <span className="mt-4 text-sm text-gray-400 rotate-90 whitespace-nowrap">Scroll to explore</span>
               </div>
             </div>
+
+            {/* Screen Indicator */}
+            <div className="absolute -right-20 top-1/2 transform -translate-y-1/2">
+              <div className="flex flex-col items-center space-y-4">
+                {['Splash', 'Home', 'Receive'].map((label, index) => (
+                  <div key={label} className="flex flex-col items-center">
+                    <div
+                      className={`w-3 h-3 rounded-full transition-all ${
+                        activeScreen === index 
+                          ? 'bg-blue-500 scale-125' 
+                          : 'bg-gray-600'
+                      }`}
+                    />
+                    <span className={`text-xs mt-2 transition-all ${
+                      activeScreen === index 
+                        ? 'text-blue-400 font-medium' 
+                        : 'text-gray-500'
+                    }`}>
+                      {label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
 
-
-      
+      <Footer/>
     </div>
   );
 };
