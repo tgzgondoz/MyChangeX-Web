@@ -67,29 +67,21 @@ const MyChangeXFullScreen = () => {
       title: "Digital Change Revolution",
       description:
         "MyChangeX was born to solve Zimbabwe's small change problem. We digitize physical change, making every coin and note work for you in the digital economy.",
-      icon: "🔄",
-      color: "text-blue-600",
     },
     {
       title: "Complete Financial Ecosystem",
       description:
         "Beyond change, we've built a full financial platform. Send money instantly, pay bills, save securely, and access micro-loans - all in one app.",
-      icon: "💼",
-      color: "text-emerald-600",
     },
     {
       title: "Vendor & Consumer Friendly",
       description:
         "Designed for everyone. Vendors get instant digital change for customers. Consumers store change that grows through our savings features.",
-      icon: "🏪",
-      color: "text-purple-600",
     },
     {
       title: "The Future of Money",
       description:
         "We're building more than an app - we're creating Zimbabwe's financial future. Where every transaction is seamless, secure, and empowering.",
-      icon: "🚀",
-      color: "text-orange-600",
     },
   ];
 
@@ -345,33 +337,69 @@ const MyChangeXFullScreen = () => {
 
       {/* Main Split Layout */}
       <div className="flex min-h-screen pt-16">
-        {/* Left Side - Scrolling Text Content */}
+        {/* Left Side - Black & White Text Content */}
         <div
           ref={textContainerRef}
           className="w-1/2 p-8 pr-16 overflow-y-auto scrollbar-hide"
           style={{ height: "calc(100vh - 64px)" }}
         >
-          <div className="max-w-2xl">
+          <div className="max-w-2xl mx-auto">
             {/* Hero Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-12"
+              className="mb-16"
             >
-              <h1 className="text-5xl font-bold leading-tight mb-6 text-black">
-                The Future of Money is Ours
-              </h1>
-              <div className="mb-8">
-                <p className="text-lg text-black leading-relaxed">
-                  MyChangeX is a revolutionary fintech super-app born out of the
-                  need to solve the longstanding problem of small change in
-                  Zimbabwe. Initially designed to digitize and store change for
-                  consumers and vendors, the platform has evolved into a
-                  full-scale financial ecosystem, enabling transactions,
-                  micro-payments, savings, donations, digital vouchers, and
-                  more.
-                </p>
+              <div className="relative mb-8">
+                <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-black to-transparent"></div>
+                <h1 className="text-6xl font-black leading-tight mb-6 text-black tracking-tight">
+                  The Future of Money is
+                  <span className="block text-black">
+                    Ours to Create
+                  </span>
+                </h1>
               </div>
+              
+              <div className="mb-8">
+                <p className="text-xl text-black leading-relaxed mb-6">
+                  MyChangeX is a revolutionary fintech super-app born out of the
+                  critical need to solve Zimbabwe's longstanding problem with physical 
+                  small change. We transform coins and notes into digital assets that 
+                  work harder for you in today's economy.
+                </p>
+                
+                <div className="border-l-4 border-black pl-4 py-2 my-6">
+                  <p className="text-lg font-medium text-black italic">
+                    "Digitizing change isn't just about convenience—it's about 
+                    empowering every Zimbabwean to participate fully in the digital economy."
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Mission Statement */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              className="mb-16 relative"
+            >
+              <h2 className="text-3xl font-bold mb-6 text-black relative">
+                Our Mission
+                <div className="w-16 h-1 bg-black mt-2"></div>
+              </h2>
+              <p className="text-lg leading-relaxed text-black space-y-4">
+                <span className="block">
+                  We're building more than an app—we're creating Zimbabwe's financial 
+                  infrastructure for the 21st century. From street vendors to corporate 
+                  offices, MyChangeX provides the tools for seamless, secure, and 
+                  empowering financial interactions.
+                </span>
+                <span className="block font-medium">
+                  Our platform has evolved from a simple change digitization tool into 
+                  a comprehensive financial ecosystem that supports transactions, 
+                  micro-payments, savings, donations, digital vouchers, and much more.
+                </span>
+              </p>
             </motion.div>
 
             {/* Features List */}
@@ -381,45 +409,140 @@ const MyChangeXFullScreen = () => {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="mb-12 group"
+                className="mb-16 group relative"
               >
                 <div className="mb-4">
-                  <h2 className={`text-2xl font-bold text-black`}>
+                  <h2 className="text-2xl font-bold mb-3 text-black">
                     {feature.title}
                   </h2>
                 </div>
-                <p className="text-base text-black leading-relaxed">
+                
+                <p className="text-lg leading-relaxed text-black">
                   {feature.description}
                 </p>
+                
+                {/* Subtle decorative line */}
+                <div className="mt-6 pt-6 border-t border-gray-300"></div>
               </motion.div>
             ))}
+
+            {/* Impact Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="mb-16 relative"
+            >
+              <h2 className="text-3xl font-bold mb-6 text-black">
+                The MyChangeX Impact
+                <div className="w-16 h-1 bg-black mt-2"></div>
+              </h2>
+              
+              <div className="space-y-6">
+                <div className="flex items-start">
+                  <div className="mr-4 mt-1">
+                    <div className="w-3 h-3 bg-black rounded-full"></div>
+                  </div>
+                  <p className="text-lg text-black">
+                    <span className="font-semibold">Financial Inclusion:</span> Bringing 
+                    digital financial services to every corner of Zimbabwe
+                  </p>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="mr-4 mt-1">
+                    <div className="w-3 h-3 bg-black rounded-full"></div>
+                  </div>
+                  <p className="text-lg text-black">
+                    <span className="font-semibold">Economic Empowerment:</span> Enabling 
+                    small businesses and individuals to grow their wealth
+                  </p>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="mr-4 mt-1">
+                    <div className="w-3 h-3 bg-black rounded-full"></div>
+                  </div>
+                  <p className="text-lg text-black">
+                    <span className="font-semibold">Digital Transformation:</span> Accelerating 
+                    Zimbabwe's journey toward a cashless economy
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Technology Stack */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="mb-16"
+            >
+              <h2 className="text-3xl font-bold mb-6 text-black">
+                Built on Trust & Innovation
+                <div className="w-16 h-1 bg-black mt-2"></div>
+              </h2>
+              <p className="text-lg leading-relaxed text-black mb-6">
+                Our platform combines military-grade security with intuitive design. 
+                Every transaction is encrypted, every account is protected, and every 
+                user's privacy is our top priority.
+              </p>
+              <div className="flex flex-wrap gap-3 mt-4">
+                <span className="px-4 py-2 bg-gray-100 text-black rounded-full text-sm font-medium border border-gray-300">
+                  Bank-Level Security
+                </span>
+                <span className="px-4 py-2 bg-gray-100 text-black rounded-full text-sm font-medium border border-gray-300">
+                  24/7 Availability
+                </span>
+                <span className="px-4 py-2 bg-gray-100 text-black rounded-full text-sm font-medium border border-gray-300">
+                  Instant Transactions
+                </span>
+                <span className="px-4 py-2 bg-gray-100 text-black rounded-full text-sm font-medium border border-gray-300">
+                  No Hidden Fees
+                </span>
+              </div>
+            </motion.div>
 
             {/* Call to Action */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="pt-8"
+              className="pt-8 mb-24 relative"
             >
-              <h3 className="text-xl font-bold mb-4 text-black">
-                Ready to Join the Revolution?
+              <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent to-black"></div>
+              
+              <h3 className="text-2xl font-bold mb-6 text-black">
+                Ready to Join Zimbabwe's Financial Revolution?
               </h3>
-              <p className="text-black mb-6">
-                Download MyChangeX today and experience the future of digital
-                finance.
+              
+              <p className="text-xl text-black mb-8 leading-relaxed">
+                Be part of the movement that's transforming how Zimbabwe handles money. 
+                From spare change to significant savings, MyChangeX puts financial 
+                power back in your hands.
               </p>
-              <div className="flex space-x-4">
-                <button className="px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition">
-                  Get Started Free
+              
+              <div className="flex space-x-6">
+                <button className="px-8 py-4 bg-black text-white rounded-xl font-semibold text-lg hover:bg-gray-800 transition-all transform hover:-translate-y-1">
+                  Start Your Journey
                 </button>
-                <button className="px-6 py-3 border border-black text-black rounded-lg font-semibold hover:bg-gray-100 transition">
+                <button className="px-8 py-4 border-2 border-black text-black rounded-xl font-semibold text-lg hover:bg-black hover:text-white transition-all">
                   Watch Demo
                 </button>
               </div>
+              
+              <p className="mt-6 text-sm text-gray-600">
+                Join over 50,000 Zimbabweans who trust MyChangeX with their daily transactions
+              </p>
             </motion.div>
+
+            {/* Footer Note */}
+            <div className="pt-8 border-t border-gray-300">
+              <p className="text-sm text-gray-600 text-center">
+                MyChangeX is licensed and regulated by the Reserve Bank of Zimbabwe
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Right Side - Phone Mockup */}
+        {/* Right Side - Phone Mockup (UNCHANGED) */}
         <div className="w-1/2 flex items-center justify-center p-8">
           <motion.div ref={phoneRef} animate={controls} className="relative">
             {/* iPhone Frame - Silver/Gray with more realistic styling */}
