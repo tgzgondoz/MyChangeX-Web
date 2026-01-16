@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import Header from './Header';
-import Footer from './footer';
+
 
 // Card Icons - Export these so Header can use WalletIcon
 export const CardIcon = () => (
@@ -411,7 +411,7 @@ const MyChangeXFullScreen = () => {
         </div>
       </div>
 
-<Footer/>
+
       
     </div>
   );
