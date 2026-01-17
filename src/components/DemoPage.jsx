@@ -9,14 +9,64 @@ const DemoPage = () => {
   const [activeScreen, setActiveScreen] = useState(1); // iPhone: 0: splash, 1: home, 2: receive
   const [androidActiveScreen, setAndroidActiveScreen] = useState(1); // Android: 0: splash, 1: home, 2: receive
   const [balance] = useState(0.77);
+  const [transactionInProgress, setTransactionInProgress] = useState(false);
+
+  // Function to handle send from iPhone
+  const handleIphoneSend = () => {
+    if (window.location.pathname.includes('/demo')) {
+      setTransactionInProgress(true);
+      
+      // iPhone shows sending state briefly
+      setActiveScreen(1); // Stay on home but we could add a sending animation
+      
+      // After a brief delay, Android shows receive screen
+      setTimeout(() => {
+        setAndroidActiveScreen(2);
+        alert("Sending coupon from iPhone to Android...");
+        setTransactionInProgress(false);
+      }, 1000);
+    }
+  };
+
+  // Function to handle send from Android
+  const handleAndroidSend = () => {
+    if (window.location.pathname.includes('/demo')) {
+      setTransactionInProgress(true);
+      
+      // Android shows sending state briefly
+      setAndroidActiveScreen(1); // Stay on home
+      
+      // After a brief delay, iPhone shows receive screen
+      setTimeout(() => {
+        setActiveScreen(2);
+        alert("Sending coupon from Android to iPhone...");
+        setTransactionInProgress(false);
+      }, 1000);
+    }
+  };
+
+  // Function to handle receive button (for both devices)
+  const handleReceiveClick = (device) => {
+    if (device === 'iphone') {
+      setActiveScreen(2);
+      setAndroidActiveScreen(1); // Reset android to home when iPhone shows receive
+    } else {
+      setAndroidActiveScreen(2);
+      setActiveScreen(1); // Reset iPhone to home when Android shows receive
+    }
+  };
 
   // Home screen component (reused for both iPhone and Android)
-  const renderHomeScreen = () => (
+  const renderHomeScreen = (device) => (
     <div className="h-full bg-[#f8f9fb] p-4">
       {/* Header with user info */}
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-black">Tatenda</h2>
-        <p className="text-gray-500 text-sm">+263 00 000 2506</p>
+        <h2 className="text-xl font-bold text-black">
+          {device === 'iphone' ? 'Tatenda' : 'Alex'}
+        </h2>
+        <p className="text-gray-500 text-sm">
+          {device === 'iphone' ? '+263 00 000 2506' : '+263 00 000 2507'}
+        </p>
       </div>
 
       {/* Balance Section */}
@@ -46,12 +96,19 @@ const DemoPage = () => {
         {/* Send Button - Blue */}
         <div className="flex flex-col items-center">
           <button
-            className="w-14 h-14 bg-[#0136c0] rounded-full flex items-center justify-center mb-2 shadow-sm hover:shadow-md transition-all"
+            className={`w-14 h-14 rounded-full flex items-center justify-center mb-2 shadow-sm hover:shadow-md transition-all ${transactionInProgress ? 'opacity-50 cursor-not-allowed' : ''}`}
+            style={{ 
+              backgroundColor: device === 'iphone' ? '#0136c0' : '#01c853'
+            }}
             onClick={() => {
-              if (window.location.pathname.includes('/demo')) {
-                alert("Send button clicked - This is a demo.");
+              if (transactionInProgress) return;
+              if (device === 'iphone') {
+                handleIphoneSend();
+              } else {
+                handleAndroidSend();
               }
             }}
+            disabled={transactionInProgress}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -69,16 +126,18 @@ const DemoPage = () => {
           <span className="text-sm text-black font-medium">Send</span>
         </div>
 
-        {/* Receive Button - Green */}
+        {/* Receive Button - Green/Blue */}
         <div className="flex flex-col items-center">
           <button
-            className="w-14 h-14 bg-[#01c853] rounded-full flex items-center justify-center mb-2 shadow-sm hover:shadow-md transition-all"
-            onClick={() => {
-              if (window.location.pathname.includes('/demo')) {
-                setActiveScreen(2);
-                setAndroidActiveScreen(2);
-              }
+            className={`w-14 h-14 rounded-full flex items-center justify-center mb-2 shadow-sm hover:shadow-md transition-all ${transactionInProgress ? 'opacity-50 cursor-not-allowed' : ''}`}
+            style={{ 
+              backgroundColor: device === 'iphone' ? '#01c853' : '#0136c0'
             }}
+            onClick={() => {
+              if (transactionInProgress) return;
+              handleReceiveClick(device);
+            }}
+            disabled={transactionInProgress}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -115,15 +174,55 @@ const DemoPage = () => {
           Spend Now
         </button>
       </div>
+
+      {/* Transaction Status Indicator */}
+      {transactionInProgress && (
+        <div className="mt-4 p-2 bg-blue-50 rounded-lg">
+          <p className="text-blue-600 text-sm text-center">
+            {device === 'iphone' ? 'Sending to Android...' : 'Sending to iPhone...'}
+          </p>
+        </div>
+      )}
     </div>
   );
 
   // Receive screen component (reused for both iPhone and Android)
-  const renderReceiveScreen = () => (
+  const renderReceiveScreen = (device) => (
     <div className="h-full bg-[#f8f9fb] p-4">
-      <h3 className="text-xl font-bold mb-4 text-center text-gray-800">
-        Receive Coupons
-      </h3>
+      {/* Header with Back to Home button */}
+      <div className="flex justify-between items-center mb-4">
+        <button
+          className="text-blue-600 font-medium flex items-center"
+          onClick={() => {
+            if (device === 'iphone') {
+              setActiveScreen(1);
+            } else {
+              setAndroidActiveScreen(1);
+            }
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mr-1"
+          >
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+          
+        </button>
+        <h3 className="text-xl font-bold text-gray-800">
+          Receive Coupons
+        </h3>
+        <div className="w-16"></div> {/* Spacer for alignment */}
+      </div>
 
       <p className="text-center text-gray-500 mb-2 text-sm font-sm">
         SCAN THIS CODE TO RECEIVE COUPONS
@@ -162,12 +261,14 @@ const DemoPage = () => {
         hold this code to the scanner
       </p>
 
-      <button
-        className="mx-11 py-8 text-blue-600 font-semi text-center"
-        onClick={() => alert("View Transactions - This is a demo.")}
-      >
-        View Transactions
-      </button>
+      <div className="flex justify-center">
+        <button
+          className="mx-11 py-3 text-blue-600 font-semi text-center"
+          onClick={() => alert("View Transactions - This is a demo.")}
+        >
+          View Transactions
+        </button>
+      </div>
     </div>
   );
 
@@ -320,8 +421,8 @@ const DemoPage = () => {
                           </div>
                         </div>
                       )}
-                      {activeScreen === 1 && renderHomeScreen()}
-                      {activeScreen === 2 && renderReceiveScreen()}
+                      {activeScreen === 1 && renderHomeScreen('iphone')}
+                      {activeScreen === 2 && renderReceiveScreen('iphone')}
                     </motion.div>
                   </div>
 
@@ -402,8 +503,8 @@ const DemoPage = () => {
                           </div>
                         </div>
                       )}
-                      {androidActiveScreen === 1 && renderHomeScreen()}
-                      {androidActiveScreen === 2 && renderReceiveScreen()}
+                      {androidActiveScreen === 1 && renderHomeScreen('android')}
+                      {androidActiveScreen === 2 && renderReceiveScreen('android')}
                     </motion.div>
                   </div>
                 </div>
@@ -428,6 +529,17 @@ const DemoPage = () => {
                 </button>
               </div>
             </div>
+          </div>
+
+          {/* Demo Instructions */}
+          <div className="mt-8 p-6 bg-blue-50 rounded-xl max-w-2xl mx-auto">
+            <h3 className="text-lg font-bold text-blue-800 mb-3">Demo Instructions:</h3>
+            <ul className="text-blue-700 space-y-2">
+              <li>• Click <strong>Send</strong> on iPhone → Android automatically shows Receive screen</li>
+              <li>• Click <strong>Send</strong> on Android → iPhone automatically shows Receive screen</li>
+              <li>• Click <strong>Receive</strong> on either device to show QR code</li>
+              <li>• Use the screen control buttons to manually switch screens</li>
+            </ul>
           </div>
         </div>
 
