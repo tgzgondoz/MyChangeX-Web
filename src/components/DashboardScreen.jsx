@@ -158,7 +158,7 @@ const MyChangeXFullScreen = () => {
     <div className="h-full flex flex-col items-center justify-center bg-[#f8f9fb] p-6">
       {/* Circular blue background with white text - CENTERED */}
       <div className="flex-1 flex items-center justify-center">
-        <div className="w-24 h-24 bg-[#0136c0] rounded-full flex items-center justify-center">
+        <div className="w-28 h-28 bg-[#0136c0] rounded-full flex items-center justify-center">
           <p className="text-white text-1xl font-medium">MyChangeX</p>
         </div>
       </div>

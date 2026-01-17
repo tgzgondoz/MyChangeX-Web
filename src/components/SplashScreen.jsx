@@ -26,61 +26,52 @@ const SplashScreen = ({ onLoadingComplete }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#f8f9fb]">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="flex flex-col items-center justify-center w-full"
-      >
-        {/* Logo/Icon */}
+    <div className="fixed inset-0 z-50 bg-[#f8f9fb] flex items-center justify-center">
+      <div className="flex flex-col items-center justify-between min-h-screen w-full max-w-md mx-auto py-12 px-6">
+        {/* Top spacer (optional, creates balance) */}
+        <div className="flex-1" />
+
+        {/* Main content - perfectly centered */}
         <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="mb-8 flex flex-col items-center"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center justify-center w-full flex-2"
         >
-          <div className="w-28 h-28 bg-[#0136c0] rounded-full flex items-center justify-center mb-4">
-            <span className="text-1xl font-bold text-white">MyChangeX</span>
+          {/* Logo container */}
+          <div className="mb-12">
+            <div className="w-32 h-32 bg-[#0136c0] rounded-full flex items-center justify-center ">
+              <p className="text-white text-xl font-semibold tracking-tight">
+                MyChangeX
+              </p>
+            </div>
           </div>
-        </motion.div>
-        <br />
-        <br />
-        {/* Loading Spinner & Text */}
-        <div className="flex flex-col items-center mb-10">
-          <div className="relative w-9 h-9 mb-1">
+
+          {/* Circular progress indicator */}
+          <div className="mb-8">
             <motion.div
-              className="absolute top-0 left-0 w-full h-full border-[3px] border-transparent border-t-[#0136c0] border-r-[#0136c0] rounded-full"
-              initial={{ rotate: 0 }}
+              className="w-8 h-8 rounded-full border-2 border-[#0136c0] border-t-transparent"
               animate={{ rotate: 360 }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "linear",
-              }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             />
           </div>
-          <br />
-          <br />
-          <p className="text-gray-600 mb-1">Loading ...</p>
-          <br />
+
+          {/* Loading text */}
+          <div className="mb-16">
+            <h1 className="text-gray-500 text-sm">Loading...</h1>
+          </div>
+        </motion.div>
+
+        {/* Copyright - fixed at bottom */}
+        <div className="flex-1 flex flex-col justify-end">
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-sm text-gray-600"
+           
+            className="text-gray-400 text-xs text-center w-full pt-8 border-t border-gray-100"
           >
-            {loadingProgress}%
+            © 2026 MyChangeX. All rights reserved.
           </motion.p>
         </div>
-      </motion.div>
-
-      {/* Copyright - centered at bottom */}
-      <motion.p
-      
-        className="absolute bottom-8 text-gray-500 text-sm text-center w-full"
-      >
-        © 2026 MyChangeX. All rights reserved.
-      </motion.p>
+      </div>
     </div>
   );
 };
