@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // Add this import
 import Header from "./Header";
 import Footer from "./Footer";
-import DemoScreen from "./DemoScreen";
+// Removed DemoScreen import since we're using navigation
 
-// Export icons for Header
+// Export icons for Header (keep these)
 export const WalletIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -59,10 +60,10 @@ const MyChangeXFullScreen = () => {
   const [balance, setBalance] = useState(0.77);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [showDemo, setShowDemo] = useState(false); // Added: Demo state
   const textContainerRef = useRef(null);
   const phoneRef = useRef(null);
   const controls = useAnimation();
+  const navigate = useNavigate(); // Initialize navigation
 
   const features = [
     {
@@ -85,27 +86,6 @@ const MyChangeXFullScreen = () => {
       description:
         "We're building more than an app - we're creating Zimbabwe's financial future. Where every transaction is seamless, secure, and empowering.",
     },
-  ];
-
-  // Static QR code pattern (consistent, no animation)
-  const qrPattern = [
-    [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0],
-    [1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0],
-    [1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1],
   ];
 
   useEffect(() => {
@@ -557,9 +537,9 @@ const MyChangeXFullScreen = () => {
                   Start Your Journey
                 </button>
                 
-                {/* Fixed: Added onClick handler to show demo */}
+                {/* UPDATED: Navigate to demo page */}
                 <button
-                  onClick={() => setShowDemo(true)}
+                  onClick={() => navigate('/demo')}
                   className="px-7 py-3.5 border border-black text-black rounded-lg font-semibold text-sm hover:bg-black hover:text-white transition-all inline-block text-center"
                 >
                   Watch Demo
@@ -734,8 +714,8 @@ const MyChangeXFullScreen = () => {
         </div>
       </div>
 
-      {/* Conditionally render Demo Screen */}
-      {showDemo && <DemoScreen onClose={() => setShowDemo(false)} />}
+      {/* REMOVED: Modal rendering */}
+      {/* {showDemo && <DemoScreen onClose={() => setShowDemo(false)} />} */}
 
       <Footer />
     </div>

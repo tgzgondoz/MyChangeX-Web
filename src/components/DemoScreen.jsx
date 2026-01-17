@@ -1,83 +1,79 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom'; // Add this import
+import Header from './Header';
+import Footer from './Footer';
 
-const DemoScreen = ({ onClose }) => {
-  // Close on Escape key press
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-    
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [onClose]);
-
-  // Close on backdrop click
-  const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
+const DemoPage = () => {
+  const navigate = useNavigate(); // Initialize navigation
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
-      onClick={handleBackdropClick}
-    >
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()} // Prevent clicks inside modal from closing
-      >
-        {/* Header with close button */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center z-10">
-          <h2 className="text-xl font-bold text-gray-800">Live Demo - Send Coupons</h2>
-          <button 
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 transition-colors p-1 rounded-full hover:bg-gray-100"
-            aria-label="Close demo"
+    <div className="min-h-screen bg-[#f8f9fb] text-gray-800">
+      <Header />
+      
+      {/* Main Content */}
+      <div className="pt-20 pb-16 px-4 max-w-7xl mx-auto">
+        {/* Page Header with Back Button */}
+        <div className="text-center mb-12 relative">
+          <button
+            onClick={() => navigate('/')}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 flex items-center text-gray-600 hover:text-black transition-colors"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
             </svg>
+            <span className="ml-2">Back to Home</span>
           </button>
+          
+          <h1 className="text-4xl font-black text-black mb-4">
+            Live Demo - Send Coupons
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Experience how MyChangeX revolutionizes digital coupon transactions across different devices
+          </p>
         </div>
 
         {/* Demo Content */}
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             
             {/* iPhone - Sender */}
             <div className="flex flex-col items-center">
-              <div className="relative w-64 h-[500px] bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 rounded-[2.5rem] shadow-2xl overflow-hidden border-[10px] border-gray-800 mb-4">
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">iPhone - Sender</h2>
+                <p className="text-gray-600">Create and send digital coupons instantly</p>
+              </div>
+              
+              <div className="relative w-72 h-[560px] bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 rounded-[2.5rem] shadow-2xl overflow-hidden border-[10px] border-gray-800 mb-4">
                 {/* iPhone Dynamic Island */}
                 <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-24 h-6 bg-black rounded-full z-20" />
                 
                 {/* Screen */}
                 <div className="absolute inset-2 bg-gradient-to-br from-gray-50 to-white rounded-[2rem] overflow-hidden">
                   {/* Status Bar */}
-                  <div className="pt-2 px-4 flex justify-between items-center text-black text-xs">
-                    <div>9:41</div>
+                  <div className="pt-2 px-6 flex justify-between items-center text-black text-xs">
+                    <div className="font-semibold">9:41</div>
                     <div className="flex items-center space-x-1">
-                      <div className="w-3 h-3 bg-green-500 rounded-full" />
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-0.5">
+                        <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+                        <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+                        <circle cx="12" cy="20" r="1" />
+                      </svg>
                       <span className="text-xs">4G</span>
                     </div>
                   </div>
                   
                   {/* App Content */}
-                  <div className="p-4 h-full">
+                  <div className="p-6 h-full">
                     <div className="mb-6">
-                      <h3 className="text-lg font-bold text-gray-800">Send Coupon</h3>
+                      <h3 className="text-xl font-bold text-gray-800">Send Coupon</h3>
                       <p className="text-gray-600 text-sm">To: John's Supermarket</p>
                     </div>
                     
                     {/* Coupon Details */}
-                    <div className="bg-blue-50 rounded-xl p-4 mb-4 border border-blue-200">
+                    <div className="bg-blue-50 rounded-xl p-4 mb-6 border border-blue-200">
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-gray-700 font-medium">$5.00 Coupon</span>
                         <span className="text-green-600 font-bold">ACTIVE</span>
@@ -90,36 +86,61 @@ const DemoScreen = ({ onClose }) => {
                           <line x1="8" y1="2" x2="8" y2="6" />
                           <line x1="3" y1="10" x2="21" y2="10" />
                         </svg>
-                        <span>Expires: 30 Dec 2024</span>
+                        <span>Expires: Dec 30, 2024</span>
+                      </div>
+                    </div>
+                    
+                    {/* Coupon Amount Input */}
+                    <div className="mb-6">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Amount</label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                        <input
+                          type="number"
+                          min="0.01"
+                          step="0.01"
+                          defaultValue="5.00"
+                          className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="0.00"
+                        />
                       </div>
                     </div>
                     
                     {/* Send Button */}
-                    <div className="absolute bottom-4 left-4 right-4">
+                    <div className="absolute bottom-6 left-6 right-6">
                       <button 
-                        className="w-full py-3 bg-[#0136c0] text-white rounded-xl font-semibold hover:bg-[#012da0] transition active:scale-95"
-                        onClick={() => alert('Coupon sent! This is a demo.')}
+                        className="w-full py-3 bg-[#0136c0] text-white rounded-xl font-semibold hover:bg-[#012da0] transition active:scale-95 shadow-lg"
+                        onClick={() => {
+                          alert('Coupon sent successfully! This is a demo.');
+                        }}
                       >
                         Send Now
                       </button>
                     </div>
                   </div>
                 </div>
+                
+                {/* iPhone Home Indicator */}
+                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-0.5 bg-gray-800/30 rounded-full"></div>
               </div>
-              <span className="text-sm font-medium text-gray-700">iPhone - Sender</span>
             </div>
 
             {/* Android - Receiver */}
             <div className="flex flex-col items-center">
-              <div className="relative w-64 h-[500px] bg-gradient-to-b from-gray-800 to-gray-900 rounded-3xl shadow-2xl overflow-hidden border-[6px] border-gray-700 mb-4">
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Android - Receiver</h2>
+                <p className="text-gray-600">Receive and manage incoming coupons</p>
+              </div>
+              
+              <div className="relative w-72 h-[560px] bg-gradient-to-b from-gray-800 to-gray-900 rounded-3xl shadow-2xl overflow-hidden border-[6px] border-gray-700 mb-4">
                 {/* Android Notch */}
                 <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-b-xl" />
                 
                 {/* Screen */}
                 <div className="absolute inset-1 bg-gradient-to-br from-gray-100 to-white rounded-[1.5rem] overflow-hidden">
                   {/* Status Bar */}
-                  <div className="pt-8 px-4 flex justify-between items-center text-black text-xs">
-                    <div>9:41</div>
+                  <div className="pt-8 px-6 flex justify-between items-center text-black text-xs">
+                    <div className="font-semibold">9:41</div>
                     <div className="flex items-center space-x-1">
                       <div className="w-3 h-3 bg-green-500 rounded-full" />
                       <span className="text-xs">4G</span>
@@ -127,42 +148,44 @@ const DemoScreen = ({ onClose }) => {
                   </div>
                   
                   {/* App Content */}
-                  <div className="p-4 h-full">
+                  <div className="p-6 h-full">
                     <div className="mb-6">
-                      <h3 className="text-lg font-bold text-gray-800">Receive Coupon</h3>
+                      <h3 className="text-xl font-bold text-gray-800">Receive Coupon</h3>
                       <p className="text-gray-600 text-sm">From: Sarah M.</p>
                     </div>
                     
                     {/* Incoming Coupon */}
-                    <div className="relative">
+                    <div className="relative mb-6">
                       {/* Incoming Animation */}
                       <motion.div 
-                        className="absolute -top-2 -right-2"
+                        className="absolute -top-2 -right-2 z-10"
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ repeat: Infinity, duration: 2 }}
                       >
-                        <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
                           <span className="text-white text-xs">1</span>
                         </div>
                       </motion.div>
                       
-                      <div className="bg-green-50 rounded-xl p-4 border-2 border-green-300 border-dashed">
+                      <div className="bg-green-50 rounded-xl p-4 border-2 border-green-300 border-dashed shadow-sm">
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-gray-700 font-medium">New Coupon!</span>
-                          <span className="text-blue-600 font-bold">$5.00</span>
+                          <span className="text-blue-600 font-bold text-lg">$5.00</span>
                         </div>
                         <p className="text-sm text-gray-600 mb-3">Sarah sent you a grocery coupon</p>
                         
                         {/* Accept/Decline Buttons */}
                         <div className="flex space-x-2">
                           <button 
-                            className="flex-1 py-2 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 transition active:scale-95"
-                            onClick={() => alert('Coupon accepted! This is a demo.')}
+                            className="flex-1 py-3 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 transition active:scale-95 shadow-md"
+                            onClick={() => {
+                              alert('Coupon accepted! Added to your wallet. This is a demo.');
+                            }}
                           >
                             Accept
                           </button>
                           <button 
-                            className="flex-1 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition active:scale-95"
+                            className="flex-1 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition active:scale-95"
                             onClick={() => alert('Coupon declined. This is a demo.')}
                           >
                             Decline
@@ -173,25 +196,40 @@ const DemoScreen = ({ onClose }) => {
                     
                     {/* Transaction History */}
                     <div className="mt-8">
-                      <h4 className="text-sm font-semibold text-gray-700 mb-2">Recent Transactions</h4>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">Recent Transactions</h4>
                       <div className="space-y-2">
                         {[
-                          { name: 'Mike T.', amount: '$2.50', time: '10:30 AM' },
-                          { name: 'Lisa K.', amount: '$3.00', time: '9:15 AM' },
-                          { name: 'John S.', amount: '$1.75', time: 'Yesterday' }
+                          { name: 'Mike T.', amount: '$2.50', time: '10:30 AM', status: 'received' },
+                          { name: 'Lisa K.', amount: '$3.00', time: '9:15 AM', status: 'sent' },
+                          { name: 'John S.', amount: '$1.75', time: 'Yesterday', status: 'received' }
                         ].map((transaction, idx) => (
                           <motion.div 
                             key={idx}
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: idx * 0.1 }}
-                            className="flex justify-between items-center text-sm p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="flex justify-between items-center text-sm p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors border border-gray-100 shadow-sm"
                           >
-                            <div>
-                              <span className="text-gray-600">{transaction.name}</span>
-                              <span className="text-gray-400 text-xs block">{transaction.time}</span>
+                            <div className="flex items-center">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
+                                transaction.status === 'received' ? 'bg-green-100' : 'bg-blue-100'
+                              }`}>
+                                <span className={`text-xs font-medium ${
+                                  transaction.status === 'received' ? 'text-green-600' : 'text-blue-600'
+                                }`}>
+                                  {transaction.status === 'received' ? '↓' : '↑'}
+                                </span>
+                              </div>
+                              <div>
+                                <span className="text-gray-700 font-medium block">{transaction.name}</span>
+                                <span className="text-gray-400 text-xs">{transaction.time}</span>
+                              </div>
                             </div>
-                            <span className="text-green-600 font-medium">{transaction.amount}</span>
+                            <span className={`font-bold ${
+                              transaction.status === 'received' ? 'text-green-600' : 'text-blue-600'
+                            }`}>
+                              {transaction.amount}
+                            </span>
                           </motion.div>
                         ))}
                       </div>
@@ -202,67 +240,164 @@ const DemoScreen = ({ onClose }) => {
                 {/* Android Navigation */}
                 <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gray-600 rounded-full" />
               </div>
-              <span className="text-sm font-medium text-gray-700">Android - Receiver</span>
             </div>
-          </div>
-          
-          {/* Demo Instructions */}
-          <div className="mt-8 p-4 bg-gray-50 rounded-xl border border-gray-200">
-            <h3 className="font-semibold text-gray-800 mb-2">How It Works:</h3>
-            <ol className="list-decimal list-inside space-y-1 text-sm text-gray-600">
-              <li>User on iPhone creates and sends a digital coupon</li>
-              <li>Receiver on Android gets instant notification</li>
-              <li>Coupon can be accepted and used immediately</li>
-              <li>All transactions are secured and recorded</li>
-            </ol>
-          </div>
-          
-          {/* Action Buttons */}
-          <div className="mt-6 flex justify-center space-x-4">
-            <button 
-              className="px-6 py-3 bg-[#0136c0] text-white rounded-lg font-semibold hover:bg-[#012da0] transition active:scale-95"
-              onClick={() => {
-                onClose();
-                // You could add navigation to actual demo page here
-                alert('Redirecting to live demo...');
-              }}
-            >
-              Try Live Demo
-            </button>
-            <button 
-              onClick={onClose}
-              className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition active:scale-95"
-            >
-              Close Demo
-            </button>
-          </div>
-
-          {/* Demo Stats */}
-          <div className="mt-6 grid grid-cols-3 gap-4 text-center">
-            <div className="p-3 bg-blue-50 rounded-lg">
-              <div className="text-lg font-bold text-[#0136c0]">50K+</div>
-              <div className="text-xs text-gray-600">Active Users</div>
-            </div>
-            <div className="p-3 bg-green-50 rounded-lg">
-              <div className="text-lg font-bold text-green-600">$2M+</div>
-              <div className="text-xs text-gray-600">Transactions</div>
-            </div>
-            <div className="p-3 bg-purple-50 rounded-lg">
-              <div className="text-lg font-bold text-purple-600">99.9%</div>
-              <div className="text-xs text-gray-600">Uptime</div>
-            </div>
-          </div>
-
-          {/* Footer Note */}
-          <div className="mt-6 pt-4 border-t border-gray-200 text-center">
-            <p className="text-xs text-gray-500">
-              This is an interactive demo. Real app functionality may vary.
-            </p>
           </div>
         </div>
-      </motion.div>
+
+        {/* How It Works Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {[
+              {
+                step: "01",
+                title: "Create Coupon",
+                description: "Generate digital coupons with custom amounts and expiration dates",
+                icon: "📱"
+              },
+              {
+                step: "02",
+                title: "Send Instantly",
+                description: "Transfer coupons to any MyChangeX user with one tap",
+                icon: "⚡"
+              },
+              {
+                step: "03",
+                title: "Receive Notification",
+                description: "Get instant alerts for incoming coupons on any device",
+                icon: "🔔"
+              },
+              {
+                step: "04",
+                title: "Use or Store",
+                description: "Redeem immediately or save for future purchases",
+                icon: "💳"
+              }
+            ].map((item, idx) => (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center mb-4">
+                  <div className="text-3xl font-black text-[#0136c0]/20 mr-3">{item.step}</div>
+                  <span className="text-2xl">{item.icon}</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-600">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Demo Stats */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">Real Impact, Real Numbers</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { value: "50K+", label: "Active Users", color: "text-[#0136c0]" },
+              { value: "$2M+", label: "Total Transactions", color: "text-green-600" },
+              { value: "99.9%", label: "System Uptime", color: "text-purple-600" },
+              { value: "24/7", label: "Customer Support", color: "text-orange-600" }
+            ].map((stat, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center hover:shadow-md transition-shadow"
+              >
+                <div className={`text-3xl font-bold mb-2 ${stat.color}`}>{stat.value}</div>
+                <div className="text-sm text-gray-600">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="bg-gradient-to-r from-[#0136c0] to-[#012da0] rounded-2xl p-8 text-center text-white shadow-xl">
+          <h2 className="text-2xl font-bold mb-4">Ready to Experience MyChangeX?</h2>
+          <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
+            Join thousands of users who have revolutionized their digital transactions with our secure and intuitive platform.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <button 
+              className="px-8 py-3 bg-white text-[#0136c0] rounded-lg font-semibold hover:bg-gray-100 transition active:scale-95 shadow-lg"
+              onClick={() => {
+                alert('Starting interactive demo...');
+                // Here you could implement actual demo functionality
+              }}
+            >
+              Start Interactive Demo
+            </button>
+            <button 
+              className="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition active:scale-95"
+              onClick={() => navigate('/')}
+            >
+              Back to Home
+            </button>
+          </div>
+        </div>
+
+        {/* Additional Information */}
+        <div className="mt-12 p-6 bg-gray-50 rounded-xl border border-gray-200">
+          <h3 className="font-semibold text-gray-800 mb-4 text-lg">Key Features Demonstrated:</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ul className="space-y-3 text-sm text-gray-600">
+              <li className="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                <span className="font-medium text-gray-800">Cross-platform compatibility (iOS & Android)</span>
+              </li>
+              <li className="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                <span className="font-medium text-gray-800">Real-time transaction notifications</span>
+              </li>
+              <li className="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                <span className="font-medium text-gray-800">Secure end-to-end encryption</span>
+              </li>
+            </ul>
+            <ul className="space-y-3 text-sm text-gray-600">
+              <li className="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                <span className="font-medium text-gray-800">Transaction history tracking</span>
+              </li>
+              <li className="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                <span className="font-medium text-gray-800">User-friendly interface design</span>
+              </li>
+              <li className="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                <span className="font-medium text-gray-800">Instant settlement with no delays</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
     </div>
   );
 };
 
-export default DemoScreen;
+export default DemoPage;
