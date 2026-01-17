@@ -7,13 +7,13 @@ const Footer = () => {
         <div className="flex items-center space-x-2">
           <span className="text-lg font-bold text-black">MyChangeX</span>
         </div>
-        <div className="text-gray-600">
+        <div className="text-[12px] text-gray-600">
           © 2026 MyChangeX. The Future of Money is Ours.
         </div>
         <div className="flex space-x-4">
-          <a href="#" className="text-gray-600 hover:text-[#0136c0] transition">Twitter</a>
-          <a href="#" className="text-gray-600 hover:text-[#0136c0] transition">LinkedIn</a>
-          <a href="#" className="text-gray-600 hover:text-[#0136c0] transition">Instagram</a>
+          <a href="#" className="text-[12px] text-gray-600 hover:text-[#0136c0] transition">Twitter</a>
+          <a href="#" className="text-[12px] text-gray-600 hover:text-[#0136c0] transition">LinkedIn</a>
+          <a href="#" className="text-[12px] text-gray-600 hover:text-[#0136c0] transition">Instagram</a>
         </div>
       </div>
     </footer>

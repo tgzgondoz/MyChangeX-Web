@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 import Header from "./Header";
 import Footer from "./Footer";
+import DemoScreen from "./DemoScreen";
 
 // Export icons for Header
 export const WalletIcon = () => (
@@ -58,6 +59,7 @@ const MyChangeXFullScreen = () => {
   const [balance, setBalance] = useState(0.77);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [showDemo, setShowDemo] = useState(false); // Added: Demo state
   const textContainerRef = useRef(null);
   const phoneRef = useRef(null);
   const controls = useAnimation();
@@ -188,7 +190,7 @@ const MyChangeXFullScreen = () => {
       </div>
 
       {/* Balance Section */}
-      <div className="mb-6 bg-white rounded-2xl p-4  border border-gray-200">
+      <div className="mb-6 bg-white rounded-2xl p-4 border border-gray-200">
         <div className="flex items-center mb-3">
           <div className="w-4 h-4 border-2 border-gray-400 rounded-full mr-3 flex items-center justify-center">
             <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
@@ -254,14 +256,14 @@ const MyChangeXFullScreen = () => {
       </div>
 
       {/* Spend Your Change Section */}
-      <div className="mt-8  rounded-2xl p-2 text-white">
-        <p className="text-black font-semibold text-center ">
+      <div className="mt-8 rounded-2xl p-2 text-white">
+        <p className="text-black font-semibold text-center">
           Spend Your Change
         </p>
-        <p className="text-gray-500 text-sm text-center ">
+        <p className="text-gray-500 text-sm text-center">
           To pay for bills, airtime, and event tickets
         </p>
-        <button className="w-full py-2  bg-[#0136c0]  text-white rounded-xl font-semibold hover:bg-white/30 transition border border-white/30">
+        <button className="w-full py-2 bg-[#0136c0] text-white rounded-xl font-semibold hover:bg-[#012da0] transition border border-white/30">
           Spend Now
         </button>
       </div>
@@ -274,7 +276,7 @@ const MyChangeXFullScreen = () => {
         Receive Coupons
       </h3>
 
-      <p className="text-center text-gray-500 mb-2 text-sm font-sm ">
+      <p className="text-center text-gray-500 mb-2 text-sm font-sm">
         SCAN THIS CODE TO RECEIVE COUPONS
       </p>
 
@@ -311,11 +313,12 @@ const MyChangeXFullScreen = () => {
         hold this code to the scanner
       </p>
 
-      <button className="mx-11 py-8 text-blue-600 font-semi text-center ">
+      <button className="mx-11 py-8 text-blue-600 font-semi text-center">
         View Transactions
       </button>
     </div>
   );
+
   return (
     <div className="min-h-screen bg-[#f8f9fb] text-gray-800 overflow-hidden">
       <Header />
@@ -325,9 +328,46 @@ const MyChangeXFullScreen = () => {
         {/* Left Side - Black & White Text Content with Font Size 11/12 */}
         <div
           ref={textContainerRef}
-          className="w-1/2 p-8 pr-16 overflow-y-auto scrollbar-hide"
+          className="w-1/2 p-8 pr-16 overflow-y-auto"
           style={{ height: "calc(100vh - 64px)" }}
         >
+          {/* Custom Scrollbar Styles */}
+          <style jsx>{`
+            /* For Webkit browsers (Chrome, Safari, Edge) */
+            div::-webkit-scrollbar {
+              width: 8px;
+            }
+
+            div::-webkit-scrollbar-track {
+              background: transparent;
+            }
+
+            div::-webkit-scrollbar-thumb {
+              background: rgba(0, 0, 0, 0.1);
+              border-radius: 10px;
+              border: 2px solid transparent;
+              background-clip: padding-box;
+              transition: all 0.3s ease;
+            }
+
+            div::-webkit-scrollbar-thumb:hover {
+              background: rgba(0, 0, 0, 0.2);
+              border: 1px solid transparent;
+              background-clip: padding-box;
+            }
+
+            /* For Firefox */
+            div {
+              scrollbar-width: thin;
+              scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+            }
+
+            /* Smooth scrolling */
+            div {
+              scroll-behavior: smooth;
+            }
+          `}</style>
+
           <div className="max-w-2xl mx-auto">
             {/* Hero Section */}
             <motion.div
@@ -513,10 +553,15 @@ const MyChangeXFullScreen = () => {
               </p>
 
               <div className="flex space-x-5">
-                <button className="px-7 py-3.5 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-800 transition-all transform hover:-translate-y-0.5">
+                <button className="px-7 py-3.5 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-800 transition-all transform hover:-translate-y-0.5 inline-block text-center">
                   Start Your Journey
                 </button>
-                <button className="px-7 py-3.5 border border-black text-black rounded-lg font-semibold text-sm hover:bg-black hover:text-white transition-all">
+                
+                {/* Fixed: Added onClick handler to show demo */}
+                <button
+                  onClick={() => setShowDemo(true)}
+                  className="px-7 py-3.5 border border-black text-black rounded-lg font-semibold text-sm hover:bg-black hover:text-white transition-all inline-block text-center"
+                >
                   Watch Demo
                 </button>
               </div>
@@ -537,7 +582,7 @@ const MyChangeXFullScreen = () => {
           </div>
         </div>
 
-        {/* Right Side - Phone Mockup (UNCHANGED) */}
+        {/* Right Side - Phone Mockup */}
         <div className="w-1/2 flex items-center justify-center p-8">
           <motion.div ref={phoneRef} animate={controls} className="relative">
             {/* iPhone Frame - Silver/Gray with more realistic styling */}
@@ -623,8 +668,6 @@ const MyChangeXFullScreen = () => {
                         stroke="none"
                       />
                     </svg>
-
-                    
                   </div>
                 </div>
                 {/* Phone Screen Content */}
@@ -690,6 +733,9 @@ const MyChangeXFullScreen = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Conditionally render Demo Screen */}
+      {showDemo && <DemoScreen onClose={() => setShowDemo(false)} />}
 
       <Footer />
     </div>
