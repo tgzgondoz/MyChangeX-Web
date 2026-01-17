@@ -533,10 +533,7 @@ const MyChangeXFullScreen = () => {
               </p>
 
               <div className="flex space-x-5">
-                <button className="px-7 py-3.5 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-800 transition-all transform hover:-translate-y-0.5 inline-block text-center">
-                  Start Your Journey
-                </button>
-                
+               
                 {/* UPDATED: Navigate to demo page */}
                 <button
                   onClick={() => navigate('/demo')}

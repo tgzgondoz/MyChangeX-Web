@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; // Add this import
+import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 
 const DemoPage = () => {
-  const navigate = useNavigate(); // Initialize navigation
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#f8f9fb] text-gray-800">
@@ -244,155 +244,22 @@ const DemoPage = () => {
           </div>
         </div>
 
-        {/* How It Works Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {[
-              {
-                step: "01",
-                title: "Create Coupon",
-                description: "Generate digital coupons with custom amounts and expiration dates",
-                icon: "📱"
-              },
-              {
-                step: "02",
-                title: "Send Instantly",
-                description: "Transfer coupons to any MyChangeX user with one tap",
-                icon: "⚡"
-              },
-              {
-                step: "03",
-                title: "Receive Notification",
-                description: "Get instant alerts for incoming coupons on any device",
-                icon: "🔔"
-              },
-              {
-                step: "04",
-                title: "Use or Store",
-                description: "Redeem immediately or save for future purchases",
-                icon: "💳"
-              }
-            ].map((item, idx) => (
-              <motion.div
-                key={item.step}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-center mb-4">
-                  <div className="text-3xl font-black text-[#0136c0]/20 mr-3">{item.step}</div>
-                  <span className="text-2xl">{item.icon}</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-800 mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+       {/* CTA Section */}
+<div className="bg-white rounded-lg p-8 text-center border border-gray-200 mb-12">
+  <h2 className="text-2xl font-bold mb-4 text-gray-800">Ready to Experience MyChangeX?</h2>
+  <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+    Join thousands of users who have revolutionized their digital transactions with our secure and intuitive platform.
+  </p>
+  <div className="flex flex-col sm:flex-row justify-center gap-4">
+    <button 
+      className="px-8 py-3 bg-white text-gray-800 rounded-lg font-semibold border border-gray-300 hover:bg-gray-50 transition"
+      onClick={() => navigate('/')}
+    >
+      Back to Home
+    </button>
+  </div>
+</div>
 
-        {/* Demo Stats */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">Real Impact, Real Numbers</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { value: "50K+", label: "Active Users", color: "text-[#0136c0]" },
-              { value: "$2M+", label: "Total Transactions", color: "text-green-600" },
-              { value: "99.9%", label: "System Uptime", color: "text-purple-600" },
-              { value: "24/7", label: "Customer Support", color: "text-orange-600" }
-            ].map((stat, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center hover:shadow-md transition-shadow"
-              >
-                <div className={`text-3xl font-bold mb-2 ${stat.color}`}>{stat.value}</div>
-                <div className="text-sm text-gray-600">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="bg-gradient-to-r from-[#0136c0] to-[#012da0] rounded-2xl p-8 text-center text-white shadow-xl">
-          <h2 className="text-2xl font-bold mb-4">Ready to Experience MyChangeX?</h2>
-          <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-            Join thousands of users who have revolutionized their digital transactions with our secure and intuitive platform.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button 
-              className="px-8 py-3 bg-white text-[#0136c0] rounded-lg font-semibold hover:bg-gray-100 transition active:scale-95 shadow-lg"
-              onClick={() => {
-                alert('Starting interactive demo...');
-                // Here you could implement actual demo functionality
-              }}
-            >
-              Start Interactive Demo
-            </button>
-            <button 
-              className="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition active:scale-95"
-              onClick={() => navigate('/')}
-            >
-              Back to Home
-            </button>
-          </div>
-        </div>
-
-        {/* Additional Information */}
-        <div className="mt-12 p-6 bg-gray-50 rounded-xl border border-gray-200">
-          <h3 className="font-semibold text-gray-800 mb-4 text-lg">Key Features Demonstrated:</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <ul className="space-y-3 text-sm text-gray-600">
-              <li className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-                <span className="font-medium text-gray-800">Cross-platform compatibility (iOS & Android)</span>
-              </li>
-              <li className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-                <span className="font-medium text-gray-800">Real-time transaction notifications</span>
-              </li>
-              <li className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-                <span className="font-medium text-gray-800">Secure end-to-end encryption</span>
-              </li>
-            </ul>
-            <ul className="space-y-3 text-sm text-gray-600">
-              <li className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-                <span className="font-medium text-gray-800">Transaction history tracking</span>
-              </li>
-              <li className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-                <span className="font-medium text-gray-800">User-friendly interface design</span>
-              </li>
-              <li className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0136c0" strokeWidth="2" className="mr-2 mt-0.5 flex-shrink-0">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-                <span className="font-medium text-gray-800">Instant settlement with no delays</span>
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
 
       <Footer />
