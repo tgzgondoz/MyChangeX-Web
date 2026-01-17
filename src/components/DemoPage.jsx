@@ -8,7 +8,7 @@ const DemoPage = () => {
   const navigate = useNavigate();
   const [activeScreen, setActiveScreen] = useState(1); // iPhone: 0: splash, 1: home, 2: receive
   const [androidActiveScreen, setAndroidActiveScreen] = useState(1); // Android: 0: splash, 1: home, 2: receive
-  const [balance] = useState(0.77);
+  const [balance] = useState(0.72);
   const [transactionInProgress, setTransactionInProgress] = useState(false);
 
   // Function to handle send from iPhone
@@ -62,7 +62,7 @@ const DemoPage = () => {
       {/* Header with user info */}
       <div className="mb-4">
         <h2 className="text-xl font-bold text-black">
-          {device === 'iphone' ? 'Tatenda' : 'Alex'}
+          {device === 'iphone' ? 'Tatenda' : 'Frank'}
         </h2>
         <p className="text-gray-500 text-sm">
           {device === 'iphone' ? '+263 00 000 2506' : '+263 00 000 2507'}
@@ -218,7 +218,7 @@ const DemoPage = () => {
           </svg>
           
         </button>
-        <h3 className="text-xl font-bold text-gray-800">
+        <h3 className="text-1xl font-bold text-gray-800">
           Receive Coupons
         </h3>
         <div className="w-16"></div> {/* Spacer for alignment */}
@@ -432,20 +432,7 @@ const DemoPage = () => {
               </div>
 
               {/* Screen Controls */}
-              <div className="flex space-x-4 mt-4">
-                <button
-                  className={`px-4 py-2 rounded-lg ${activeScreen === 1 ? 'bg-[#0136c0] text-white' : 'bg-gray-200 text-gray-700'}`}
-                  onClick={() => setActiveScreen(1)}
-                >
-                  Home Screen
-                </button>
-                <button
-                  className={`px-4 py-2 rounded-lg ${activeScreen === 2 ? 'bg-[#0136c0] text-white' : 'bg-gray-200 text-gray-700'}`}
-                  onClick={() => setActiveScreen(2)}
-                >
-                  Receive Screen
-                </button>
-              </div>
+            
             </div>
 
             {/* Android - Receiver - Now with the same home/send/receive functionality */}
@@ -513,34 +500,10 @@ const DemoPage = () => {
                 <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gray-600 rounded-full" />
               </div>
 
-              {/* Android Screen Controls */}
-              <div className="flex space-x-4 mt-4">
-                <button
-                  className={`px-4 py-2 rounded-lg ${androidActiveScreen === 1 ? 'bg-[#01c853] text-white' : 'bg-gray-200 text-gray-700'}`}
-                  onClick={() => setAndroidActiveScreen(1)}
-                >
-                  Home Screen
-                </button>
-                <button
-                  className={`px-4 py-2 rounded-lg ${androidActiveScreen === 2 ? 'bg-[#01c853] text-white' : 'bg-gray-200 text-gray-700'}`}
-                  onClick={() => setAndroidActiveScreen(2)}
-                >
-                  Receive Screen
-                </button>
-              </div>
             </div>
           </div>
 
-          {/* Demo Instructions */}
-          <div className="mt-8 p-6 bg-blue-50 rounded-xl max-w-2xl mx-auto">
-            <h3 className="text-lg font-bold text-blue-800 mb-3">Demo Instructions:</h3>
-            <ul className="text-blue-700 space-y-2">
-              <li>• Click <strong>Send</strong> on iPhone → Android automatically shows Receive screen</li>
-              <li>• Click <strong>Send</strong> on Android → iPhone automatically shows Receive screen</li>
-              <li>• Click <strong>Receive</strong> on either device to show QR code</li>
-              <li>• Use the screen control buttons to manually switch screens</li>
-            </ul>
-          </div>
+          
         </div>
 
         {/* CTA Section */}
