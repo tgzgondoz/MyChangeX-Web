@@ -224,6 +224,9 @@ const DemoPage = () => {
               <div className="relative w-72 h-[560px] bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 rounded-[2.5rem] shadow-2xl overflow-hidden border-[10px] border-gray-800 mb-4">
                 {/* iPhone Dynamic Island */}
                 <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-24 h-6 bg-black rounded-full z-20" />
+                 <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-24 h-6 bg-black rounded-full z-20 flex items-center justify-center">
+                <div className="absolute right-2 w-3 h-3 bg-gray-600 rounded-full"></div>
+              </div>
 
                 {/* Screen */}
                 <div className="absolute inset-2 bg-gradient-to-br from-gray-50 to-white rounded-[2rem] overflow-hidden">
@@ -361,11 +364,12 @@ const DemoPage = () => {
 
                 {/* Screen */}
                 <div className="absolute inset-1 bg-gradient-to-br from-gray-100 to-white rounded-[1.5rem] overflow-hidden">
-                  {/* Android Status Bar */}
-                  <div className="pt-8 px-6 flex justify-between items-center text-black text-xs">
+                  
+                  <div className="pt-4 px-4 flex justify-center items-center text-black text-xs space-x-20">
                     <div className="font-semibold">9:41</div>
+                    <div className="w-4 h-4 bg-gray-600 rounded-full" />
                     <div className="flex items-center space-x-1">
-                      <div className="w-3 h-3 bg-green-500 rounded-full" />
+                      <div className="w-5 h-3 bg-gray-500 rounded-full" />
                       <span className="text-xs">4G</span>
                     </div>
                   </div>
@@ -427,49 +431,6 @@ const DemoPage = () => {
           </div>
         </div>
 
-        {/* Interactive Demo Instructions */}
-        <div className="bg-white rounded-xl p-6 mb-12 border border-gray-200 shadow-sm">
-          <h3 className="text-xl font-bold mb-4 text-gray-800">How to Use This Demo</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-[#0136c0] text-white rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-                  1
-                </div>
-                <p className="text-gray-600">
-                  <strong>iPhone Demo:</strong> Click the blue "Home Screen" and "Receive Screen" buttons below the iPhone to switch between views.
-                </p>
-              </div>
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-[#0136c0] text-white rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-                  2
-                </div>
-                <p className="text-gray-600">
-                  <strong>Android Demo:</strong> Click the green "Home Screen" and "Receive Screen" buttons below the Android to switch between views.
-                </p>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-[#01c853] text-white rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-                  3
-                </div>
-                <p className="text-gray-600">
-                  <strong>Interactive Buttons:</strong> Click the Send, Receive, Spend Now, and View Transactions buttons on both devices to see demo alerts.
-                </p>
-              </div>
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-[#01c853] text-white rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-                  4
-                </div>
-                <p className="text-gray-600">
-                  <strong>Cross-Platform:</strong> Both iPhone and Android show identical MyChangeX functionality, demonstrating our platform's consistency.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* CTA Section */}
         <div className="rounded-lg p-8 text-center mb-12">
           <h2 className="text-2xl font-bold mb-4 text-gray-800">
@@ -480,13 +441,13 @@ const DemoPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <button
-              className="px-8 py-3 bg-[#0136c0] text-white rounded-lg font-semibold hover:bg-[#012da0] transition"
+              className="px-8 py-3  text-[#0136c0] rounded-lg font-semibold "
               onClick={() => alert("Download app - This is a demo.")}
             >
               Download App
             </button>
             <button
-              className="px-8 py-3 border border-gray-300 text-gray-800 rounded-lg font-semibold hover:bg-gray-50 transition"
+              className="px-8 py-3  text-gray-800 rounded-lg font-semibold "
               onClick={() => navigate("/")}
             >
               Back to Home
