@@ -188,7 +188,7 @@ const MyChangeXFullScreen = () => {
       </div>
 
       {/* Balance Section */}
-      <div className="mb-6 bg-white rounded-2xl p-4 shadow-sm border border-gray-200">
+      <div className="mb-6 bg-white rounded-2xl p-4  border border-gray-200">
         <div className="flex items-center mb-3">
           <div className="w-4 h-4 border-2 border-gray-400 rounded-full mr-3 flex items-center justify-center">
             <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
@@ -278,16 +278,16 @@ const MyChangeXFullScreen = () => {
         SCAN THIS CODE TO RECEIVE COUPONS
       </p>
 
-      {/* QR Code Container - Centered with QR icon */}
-      <div className="mb-5">
-        <div className="bg-white p-5 rounded-2xl shadow-md border border-gray-200 mx-auto max-w-xs">
-          <div className="w-full aspect-square flex items-center justify-center  ">
-            {/* QR Code Icon with enhanced design */}
+      {/* QR Code Container - Centered with proper sizing */}
+      <div className="mb-5 flex justify-center">
+        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+          {/* QR Code with reduced but still scannable size */}
+          <div className="w-40 h-40 flex items-center justify-center mx-auto">
             <div className="relative">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="120"
-                height="120"
+                width="160"
+                height="160"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="#0136c0"
@@ -302,20 +302,6 @@ const MyChangeXFullScreen = () => {
                 <line x1="20" y1="14" x2="20" y2="17" />
                 <line x1="14" y1="20" x2="17" y2="20" />
               </svg>
-
-              {/* Subtle animation effect */}
-              <motion.div
-                className="absolute inset-0 border-2 border-blue-200 rounded-lg"
-                animate={{
-                  opacity: [0.3, 0.6, 0.3],
-                  scale: [1, 1.05, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
             </div>
           </div>
         </div>
@@ -325,12 +311,11 @@ const MyChangeXFullScreen = () => {
         hold this code to the scanner
       </p>
 
-      <button className="mx-11 py-8  text-blue-600 font-semi  text-center ">
+      <button className="mx-11 py-8 text-blue-600 font-semi text-center ">
         View Transactions
       </button>
     </div>
   );
-
   return (
     <div className="min-h-screen bg-[#f8f9fb] text-gray-800 overflow-hidden">
       <Header />
@@ -354,24 +339,23 @@ const MyChangeXFullScreen = () => {
                 <div className="absolute -left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-black to-transparent"></div>
                 <h1 className="text-4xl font-black leading-tight mb-5 text-black tracking-tight">
                   The Future of Money is
-                  <span className="block text-black">
-                    Ours to Create
-                  </span>
+                  <span className="block text-black">Ours to Create</span>
                 </h1>
               </div>
-              
+
               <div className="mb-7">
-                <p className="text-sm leading-relaxed mb-5 text-black">
+                <p className="text-sm leading-relaxed mb-5 text-[#747474]">
                   MyChangeX is a revolutionary fintech super-app born out of the
-                  critical need to solve Zimbabwe's longstanding problem with physical 
-                  small change. We transform coins and notes into digital assets that 
-                  work harder for you in today's economy.
+                  critical need to solve Zimbabwe's longstanding problem with
+                  physical small change. We transform coins and notes into
+                  digital assets that work harder for you in today's economy.
                 </p>
-                
+
                 <div className="border-l-3 border-black pl-4 py-2 my-5">
                   <p className="text-sm font-medium text-black italic">
-                    "Digitizing change isn't just about convenience—it's about 
-                    empowering every Zimbabwean to participate fully in the digital economy."
+                    "Digitizing change isn't just about convenience—it's about
+                    empowering every Zimbabwean to participate fully in the
+                    digital economy."
                   </p>
                 </div>
               </div>
@@ -387,17 +371,18 @@ const MyChangeXFullScreen = () => {
                 Our Mission
                 <div className="w-14 h-0.5 bg-black mt-1.5"></div>
               </h2>
-              <p className="text-sm leading-relaxed text-black space-y-3">
+              <p className="text-sm leading-relaxed text-[#747474] space-y-3">
                 <span className="block">
-                  We're building more than an app—we're creating Zimbabwe's financial 
-                  infrastructure for the 21st century. From street vendors to corporate 
-                  offices, MyChangeX provides the tools for seamless, secure, and 
-                  empowering financial interactions.
+                  We're building more than an app—we're creating Zimbabwe's
+                  financial infrastructure for the 21st century. From street
+                  vendors to corporate offices, MyChangeX provides the tools for
+                  seamless, secure, and empowering financial interactions.
                 </span>
                 <span className="block font-medium">
-                  Our platform has evolved from a simple change digitization tool into 
-                  a comprehensive financial ecosystem that supports transactions, 
-                  micro-payments, savings, donations, digital vouchers, and much more.
+                  Our platform has evolved from a simple change digitization
+                  tool into a comprehensive financial ecosystem that supports
+                  transactions, micro-payments, savings, donations, digital
+                  vouchers, and much more.
                 </span>
               </p>
             </motion.div>
@@ -416,11 +401,11 @@ const MyChangeXFullScreen = () => {
                     {feature.title}
                   </h2>
                 </div>
-                
-                <p className="text-sm leading-relaxed text-black">
+
+                <p className="text-sm leading-relaxed text-[#747474]">
                   {feature.description}
                 </p>
-                
+
                 {/* Subtle decorative line */}
                 <div className="mt-5 pt-5 border-t border-gray-300"></div>
               </motion.div>
@@ -436,35 +421,43 @@ const MyChangeXFullScreen = () => {
                 The MyChangeX Impact
                 <div className="w-14 h-0.5 bg-black mt-1.5"></div>
               </h2>
-              
+
               <div className="space-y-4">
                 <div className="flex items-start">
                   <div className="mr-3 mt-1">
                     <div className="w-2.5 h-2.5 bg-black rounded-full"></div>
                   </div>
-                  <p className="text-sm text-black">
-                    <span className="font-semibold">Financial Inclusion:</span> Bringing 
-                    digital financial services to every corner of Zimbabwe
+                  <p className="text-sm text-[#747474]">
+                    <span className="font-semibold text-black">
+                      Financial Inclusion:
+                    </span>{" "}
+                    Bringing digital financial services to every corner of
+                    Zimbabwe
                   </p>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="mr-3 mt-1">
                     <div className="w-2.5 h-2.5 bg-black rounded-full"></div>
                   </div>
-                  <p className="text-sm text-black">
-                    <span className="font-semibold">Economic Empowerment:</span> Enabling 
-                    small businesses and individuals to grow their wealth
+                  <p className="text-sm text-[#747474]">
+                    <span className="font-semibold text-black">
+                      Economic Empowerment:
+                    </span>{" "}
+                    Enabling small businesses and individuals to grow their
+                    wealth
                   </p>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="mr-3 mt-1">
                     <div className="w-2.5 h-2.5 bg-black rounded-full"></div>
                   </div>
-                  <p className="text-sm text-black">
-                    <span className="font-semibold">Digital Transformation:</span> Accelerating 
-                    Zimbabwe's journey toward a cashless economy
+                  <p className="text-sm text-[#747474]">
+                    <span className="font-semibold text-black">
+                      Digital Transformation:
+                    </span>{" "}
+                    Accelerating Zimbabwe's journey toward a cashless economy
                   </p>
                 </div>
               </div>
@@ -480,10 +473,10 @@ const MyChangeXFullScreen = () => {
                 Built on Trust & Innovation
                 <div className="w-14 h-0.5 bg-black mt-1.5"></div>
               </h2>
-              <p className="text-sm leading-relaxed text-black mb-5">
-                Our platform combines military-grade security with intuitive design. 
-                Every transaction is encrypted, every account is protected, and every 
-                user's privacy is our top priority.
+              <p className="text-sm leading-relaxed text-[#747474] mb-5">
+                Our platform combines military-grade security with intuitive
+                design. Every transaction is encrypted, every account is
+                protected, and every user's privacy is our top priority.
               </p>
               <div className="flex flex-wrap gap-3 mt-4">
                 <span className="px-4 py-2 bg-gray-100 text-black rounded-full text-sm font-medium border border-gray-300">
@@ -508,17 +501,17 @@ const MyChangeXFullScreen = () => {
               className="pt-8 mb-20 relative"
             >
               <div className="absolute -left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent to-black"></div>
-              
+
               <h3 className="text-base font-bold mb-5 text-black">
                 Ready to Join Zimbabwe's Financial Revolution?
               </h3>
-              
-              <p className="text-sm text-black mb-7 leading-relaxed">
-                Be part of the movement that's transforming how Zimbabwe handles money. 
-                From spare change to significant savings, MyChangeX puts financial 
-                power back in your hands.
+
+              <p className="text-sm text-[#747474] mb-7 leading-relaxed">
+                Be part of the movement that's transforming how Zimbabwe handles
+                money. From spare change to significant savings, MyChangeX puts
+                financial power back in your hands.
               </p>
-              
+
               <div className="flex space-x-5">
                 <button className="px-7 py-3.5 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-800 transition-all transform hover:-translate-y-0.5">
                   Start Your Journey
@@ -527,16 +520,18 @@ const MyChangeXFullScreen = () => {
                   Watch Demo
                 </button>
               </div>
-              
+
               <p className="mt-5 text-sm text-gray-600">
-                Join over 50,000 Zimbabweans who trust MyChangeX with their daily transactions
+                Join over 50,000 Zimbabweans who trust MyChangeX with their
+                daily transactions
               </p>
             </motion.div>
 
             {/* Footer Note */}
             <div className="pt-8 border-t border-gray-300">
               <p className="text-sm text-gray-600 text-center">
-                MyChangeX is licensed and regulated by the Reserve Bank of Zimbabwe
+                MyChangeX is licensed and regulated by the Reserve Bank of
+                Zimbabwe
               </p>
             </div>
           </div>
@@ -572,10 +567,66 @@ const MyChangeXFullScreen = () => {
                     <div className="text-xs font-semibold">9:41</div>
                   </div>
                   <div className="flex items-center space-x-0.5">
-                    <span className="font-bold">100%</span>
+                    {/* WiFi Icon */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="mr-0.5"
+                    >
+                      <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+                      <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+                      <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+                      <circle cx="12" cy="20" r="1" />
+                    </svg>
+
+                    {/* Battery Icon with Green Fill */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="relative"
+                    >
+                      {/* Battery outline */}
+                      <rect
+                        x="2"
+                        y="7"
+                        width="18"
+                        height="10"
+                        rx="2"
+                        ry="2"
+                        fill="none"
+                      />
+                      {/* Battery terminal */}
+                      <line x1="22" x2="22" y1="10" y2="14" />
+                      {/* Green battery fill (full) */}
+                      <rect
+                        x="4"
+                        y="9"
+                        width="14"
+                        height="6"
+                        rx="1"
+                        ry="1"
+                        fill="#4CAF50"
+                        stroke="none"
+                      />
+                    </svg>
+
+                    
                   </div>
                 </div>
-
                 {/* Phone Screen Content */}
                 <div className="pt-10 h-full overflow-hidden">
                   <motion.div
