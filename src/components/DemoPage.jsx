@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
@@ -6,6 +6,170 @@ import Footer from "./Footer";
 
 const DemoPage = () => {
   const navigate = useNavigate();
+  const [activeScreen, setActiveScreen] = useState(1); // iPhone: 0: splash, 1: home, 2: receive
+  const [androidActiveScreen, setAndroidActiveScreen] = useState(1); // Android: 0: splash, 1: home, 2: receive
+  const [balance] = useState(0.77);
+
+  // Home screen component (reused for both iPhone and Android)
+  const renderHomeScreen = () => (
+    <div className="h-full bg-[#f8f9fb] p-4">
+      {/* Header with user info */}
+      <div className="mb-4">
+        <h2 className="text-xl font-bold text-black">Tatenda</h2>
+        <p className="text-gray-500 text-sm">+263 00 000 2506</p>
+      </div>
+
+      {/* Balance Section */}
+      <div className="mb-6 bg-white rounded-2xl p-4 border border-gray-200">
+        <div className="flex items-center mb-3">
+          <div className="w-4 h-4 border-2 border-gray-400 rounded-full mr-3 flex items-center justify-center">
+            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+          </div>
+          <span className="text-sm text-gray-600">Total Balance</span>
+        </div>
+
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-3xl font-bold text-black">
+            ${balance.toFixed(2)}
+          </h3>
+          <div className="text-gray-500 text-sm">USD</div>
+        </div>
+
+        <div className="flex items-center justify-right space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <span className="text-xs text-gray-500">Updated</span>
+        </div>
+      </div>
+
+      {/* Circular Send/Receive Buttons */}
+      <div className="flex justify-center space-x-16 mb-6">
+        {/* Send Button - Blue */}
+        <div className="flex flex-col items-center">
+          <button
+            className="w-14 h-14 bg-[#0136c0] rounded-full flex items-center justify-center mb-2 shadow-sm hover:shadow-md transition-all"
+            onClick={() => {
+              if (window.location.pathname.includes('/demo')) {
+                alert("Send button clicked - This is a demo.");
+              }
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+            >
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+          <span className="text-sm text-black font-medium">Send</span>
+        </div>
+
+        {/* Receive Button - Green */}
+        <div className="flex flex-col items-center">
+          <button
+            className="w-14 h-14 bg-[#01c853] rounded-full flex items-center justify-center mb-2 shadow-sm hover:shadow-md transition-all"
+            onClick={() => {
+              if (window.location.pathname.includes('/demo')) {
+                setActiveScreen(2);
+                setAndroidActiveScreen(2);
+              }
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+            >
+              <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+              <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+              <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+              <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+              <line x1="7" y1="12" x2="17" y2="12" />
+            </svg>
+          </button>
+          <span className="text-sm text-black font-medium">Receive</span>
+        </div>
+      </div>
+
+      {/* Spend Your Change Section */}
+      <div className="mt-8 rounded-2xl p-2 text-white">
+        <p className="text-black font-semibold text-center">
+          Spend Your Change
+        </p>
+        <p className="text-gray-500 text-sm text-center">
+          To pay for bills, airtime, and event tickets
+        </p>
+        <button
+          className="w-full py-2 bg-[#0136c0] text-white rounded-xl font-semibold hover:bg-[#012da0] transition border border-white/30"
+          onClick={() => alert("Spend feature demo - This is a demo.")}
+        >
+          Spend Now
+        </button>
+      </div>
+    </div>
+  );
+
+  // Receive screen component (reused for both iPhone and Android)
+  const renderReceiveScreen = () => (
+    <div className="h-full bg-[#f8f9fb] p-4">
+      <h3 className="text-xl font-bold mb-4 text-center text-gray-800">
+        Receive Coupons
+      </h3>
+
+      <p className="text-center text-gray-500 mb-2 text-sm font-sm">
+        SCAN THIS CODE TO RECEIVE COUPONS
+      </p>
+
+      {/* QR Code Container - Centered with proper sizing */}
+      <div className="mb-5 flex justify-center">
+        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+          {/* QR Code with reduced but still scannable size */}
+          <div className="w-40 h-40 flex items-center justify-center mx-auto">
+            <div className="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="160"
+                height="160"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#0136c0"
+                strokeWidth="2"
+                className="drop-shadow-sm"
+              >
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <line x1="14" y1="14" x2="17" y2="17" />
+                <line x1="17" y1="14" x2="14" y2="17" />
+                <line x1="20" y1="14" x2="20" y2="17" />
+                <line x1="14" y1="20" x2="17" y2="20" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p className="text-center text-gray-600 mb-3 text-sm font-sm tracking-wide">
+        hold this code to the scanner
+      </p>
+
+      <button
+        className="mx-11 py-8 text-blue-600 font-semi text-center"
+        onClick={() => alert("View Transactions - This is a demo.")}
+      >
+        View Transactions
+      </button>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-[#f8f9fb] text-gray-800">
@@ -46,14 +210,14 @@ const DemoPage = () => {
         {/* Demo Content */}
         <div className="mb-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* iPhone - Sender */}
+            {/* iPhone - Sender - Using screens from MyChangeXFullScreen */}
             <div className="flex flex-col items-center">
               <div className="mb-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                  iPhone - Sender
+                  iPhone 
                 </h2>
                 <p className="text-gray-600">
-                  Create and send digital coupons instantly
+                  Home screen and send/receive functionality
                 </p>
               </div>
 
@@ -63,10 +227,13 @@ const DemoPage = () => {
 
                 {/* Screen */}
                 <div className="absolute inset-2 bg-gradient-to-br from-gray-50 to-white rounded-[2rem] overflow-hidden">
-                  {/* Status Bar */}
-                  <div className="pt-2 px-6 flex justify-between items-center text-black text-xs">
-                    <div className="font-semibold">9:41</div>
+                  {/* Status Bar - iPhone Style */}
+                  <div className="absolute top-2 left-0 right-0 px-6 flex justify-between items-center text-black text-[11px] font-medium">
                     <div className="flex items-center space-x-1">
+                      <div className="text-xs font-semibold">9:41</div>
+                    </div>
+                    <div className="flex items-center space-x-0.5">
+                      {/* WiFi Icon */}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="12"
@@ -75,6 +242,8 @@ const DemoPage = () => {
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         className="mr-0.5"
                       >
                         <path d="M5 12.55a11 11 0 0 1 14.08 0" />
@@ -82,106 +251,107 @@ const DemoPage = () => {
                         <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
                         <circle cx="12" cy="20" r="1" />
                       </svg>
-                      <span className="text-xs">4G</span>
-                    </div>
-                  </div>
 
-                  {/* App Content */}
-                  <div className="p-6 h-full">
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-gray-800">
-                        Send Coupon
-                      </h3>
-                      <p className="text-gray-600 text-sm">
-                        To: John's Supermarket
-                      </p>
-                    </div>
-
-                    {/* Coupon Details */}
-                    <div className="bg-blue-50 rounded-xl p-4 mb-6 border border-blue-200">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-gray-700 font-medium">
-                          $5.00 Coupon
-                        </span>
-                        <span className="text-green-600 font-bold">ACTIVE</span>
-                      </div>
-                      <p className="text-sm text-gray-600 mb-3">
-                        Valid for groceries at John's Supermarket
-                      </p>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          className="mr-1"
-                        >
-                          <rect
-                            x="3"
-                            y="4"
-                            width="18"
-                            height="18"
-                            rx="2"
-                            ry="2"
-                          />
-                          <line x1="16" y1="2" x2="16" y2="6" />
-                          <line x1="8" y1="2" x2="8" y2="6" />
-                          <line x1="3" y1="10" x2="21" y2="10" />
-                        </svg>
-                        <span>Expires: Dec 30, 2024</span>
-                      </div>
-                    </div>
-
-                    {/* Coupon Amount Input */}
-                    <div className="mb-6">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Amount
-                      </label>
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                          $
-                        </span>
-                        <input
-                          type="number"
-                          min="0.01"
-                          step="0.01"
-                          defaultValue="5.00"
-                          className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="0.00"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Send Button */}
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <button
-                        className="w-full py-3 bg-[#0136c0] text-white rounded-xl font-semibold hover:bg-[#012da0] transition active:scale-95 shadow-lg"
-                        onClick={() => {
-                          alert("Coupon sent successfully! This is a demo.");
-                        }}
+                      {/* Battery Icon with Green Fill */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="relative"
                       >
-                        Send Now
-                      </button>
+                        <rect
+                          x="2"
+                          y="7"
+                          width="18"
+                          height="10"
+                          rx="2"
+                          ry="2"
+                          fill="none"
+                        />
+                        <line x1="22" x2="22" y1="10" y2="14" />
+                        <rect
+                          x="4"
+                          y="9"
+                          width="14"
+                          height="6"
+                          rx="1"
+                          ry="1"
+                          fill="#4CAF50"
+                          stroke="none"
+                        />
+                      </svg>
                     </div>
                   </div>
-                </div>
+                  
+                  {/* Phone Screen Content */}
+                  <div className="pt-10 h-full overflow-hidden">
+                    <motion.div
+                      key={activeScreen}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="h-full"
+                    >
+                      {activeScreen === 0 && (
+                        <div className="h-full flex flex-col items-center justify-center bg-[#f8f9fb] p-6">
+                          <div className="flex-1 flex items-center justify-center">
+                            <div className="w-28 h-28 bg-[#0136c0] rounded-full flex items-center justify-center">
+                              <p className="text-white text-1xl font-medium">MyChangeX</p>
+                            </div>
+                          </div>
+                          <div className="mb-8">
+                            <motion.div
+                              className="w-8 h-8 rounded-full border-2 border-[#0136c0] border-t-transparent"
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            />
+                          </div>
+                          <div className="mb-16">
+                            <h1 className="text-gray-500 text-sm">Loading...</h1>
+                          </div>
+                        </div>
+                      )}
+                      {activeScreen === 1 && renderHomeScreen()}
+                      {activeScreen === 2 && renderReceiveScreen()}
+                    </motion.div>
+                  </div>
 
-                {/* iPhone Home Indicator */}
-                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-0.5 bg-gray-800/30 rounded-full"></div>
+                  {/* iPhone Home Indicator */}
+                  <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-0.5 bg-gray-800/30 rounded-full"></div>
+                </div>
+              </div>
+
+              {/* Screen Controls */}
+              <div className="flex space-x-4 mt-4">
+                <button
+                  className={`px-4 py-2 rounded-lg ${activeScreen === 1 ? 'bg-[#0136c0] text-white' : 'bg-gray-200 text-gray-700'}`}
+                  onClick={() => setActiveScreen(1)}
+                >
+                  Home Screen
+                </button>
+                <button
+                  className={`px-4 py-2 rounded-lg ${activeScreen === 2 ? 'bg-[#0136c0] text-white' : 'bg-gray-200 text-gray-700'}`}
+                  onClick={() => setActiveScreen(2)}
+                >
+                  Receive Screen
+                </button>
               </div>
             </div>
 
-            {/* Android - Receiver */}
+            {/* Android - Receiver - Now with the same home/send/receive functionality */}
             <div className="flex flex-col items-center">
               <div className="mb-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                  Android - Receiver
+                  Android 
                 </h2>
                 <p className="text-gray-600">
-                  Receive and manage incoming coupons
+                  Home screen and send/receive functionality
                 </p>
               </div>
 
@@ -191,7 +361,7 @@ const DemoPage = () => {
 
                 {/* Screen */}
                 <div className="absolute inset-1 bg-gradient-to-br from-gray-100 to-white rounded-[1.5rem] overflow-hidden">
-                  {/* Status Bar */}
+                  {/* Android Status Bar */}
                   <div className="pt-8 px-6 flex justify-between items-center text-black text-xs">
                     <div className="font-semibold">9:41</div>
                     <div className="flex items-center space-x-1">
@@ -200,162 +370,123 @@ const DemoPage = () => {
                     </div>
                   </div>
 
-                  {/* App Content */}
-                  <div className="p-6 h-full">
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-gray-800">
-                        Receive Coupon
-                      </h3>
-                      <p className="text-gray-600 text-sm">From: Sarah M.</p>
-                    </div>
-
-                    {/* Incoming Coupon */}
-                    <div className="relative mb-6">
-                      {/* Incoming Animation */}
-                      <motion.div
-                        className="absolute -top-2 -right-2 z-10"
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ repeat: Infinity, duration: 2 }}
-                      >
-                        <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
-                          <span className="text-white text-xs">1</span>
-                        </div>
-                      </motion.div>
-
-                      <div className="bg-green-50 rounded-xl p-4 border-2 border-green-300 border-dashed shadow-sm">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-gray-700 font-medium">
-                            New Coupon!
-                          </span>
-                          <span className="text-blue-600 font-bold text-lg">
-                            $5.00
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600 mb-3">
-                          Sarah sent you a grocery coupon
-                        </p>
-
-                        {/* Accept/Decline Buttons */}
-                        <div className="flex space-x-2">
-                          <button
-                            className="flex-1 py-3 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 transition active:scale-95 shadow-md"
-                            onClick={() => {
-                              alert(
-                                "Coupon accepted! Added to your wallet. This is a demo.",
-                              );
-                            }}
-                          >
-                            Accept
-                          </button>
-                          <button
-                            className="flex-1 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition active:scale-95"
-                            onClick={() =>
-                              alert("Coupon declined. This is a demo.")
-                            }
-                          >
-                            Decline
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Transaction History */}
-                    <div className="mt-8">
-                      <h4 className="text-sm font-semibold text-gray-700 mb-3">
-                        Recent Transactions
-                      </h4>
-                      <div className="space-y-2">
-                        {[
-                          {
-                            name: "Mike T.",
-                            amount: "$2.50",
-                            time: "10:30 AM",
-                            status: "received",
-                          },
-                          {
-                            name: "Lisa K.",
-                            amount: "$3.00",
-                            time: "9:15 AM",
-                            status: "sent",
-                          },
-                          {
-                            name: "John S.",
-                            amount: "$1.75",
-                            time: "Yesterday",
-                            status: "received",
-                          },
-                        ].map((transaction, idx) => (
-                          <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="flex justify-between items-center text-sm p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors border border-gray-100 shadow-sm"
-                          >
-                            <div className="flex items-center">
-                              <div
-                                className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
-                                  transaction.status === "received"
-                                    ? "bg-green-100"
-                                    : "bg-blue-100"
-                                }`}
-                              >
-                                <span
-                                  className={`text-xs font-medium ${
-                                    transaction.status === "received"
-                                      ? "text-green-600"
-                                      : "text-blue-600"
-                                  }`}
-                                >
-                                  {transaction.status === "received"
-                                    ? "↓"
-                                    : "↑"}
-                                </span>
-                              </div>
-                              <div>
-                                <span className="text-gray-700 font-medium block">
-                                  {transaction.name}
-                                </span>
-                                <span className="text-gray-400 text-xs">
-                                  {transaction.time}
-                                </span>
-                              </div>
+                  {/* Android Screen Content */}
+                  <div className="h-full overflow-hidden">
+                    <motion.div
+                      key={androidActiveScreen}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="h-full"
+                    >
+                      {androidActiveScreen === 0 && (
+                        <div className="h-full flex flex-col items-center justify-center bg-[#f8f9fb] p-6">
+                          <div className="flex-1 flex items-center justify-center">
+                            <div className="w-28 h-28 bg-[#0136c0] rounded-full flex items-center justify-center">
+                              <p className="text-white text-1xl font-medium">MyChangeX</p>
                             </div>
-                            <span
-                              className={`font-bold ${
-                                transaction.status === "received"
-                                  ? "text-green-600"
-                                  : "text-blue-600"
-                              }`}
-                            >
-                              {transaction.amount}
-                            </span>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
+                          </div>
+                          <div className="mb-8">
+                            <motion.div
+                              className="w-8 h-8 rounded-full border-2 border-[#0136c0] border-t-transparent"
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            />
+                          </div>
+                          <div className="mb-16">
+                            <h1 className="text-gray-500 text-sm">Loading...</h1>
+                          </div>
+                        </div>
+                      )}
+                      {androidActiveScreen === 1 && renderHomeScreen()}
+                      {androidActiveScreen === 2 && renderReceiveScreen()}
+                    </motion.div>
                   </div>
                 </div>
 
                 {/* Android Navigation */}
                 <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gray-600 rounded-full" />
               </div>
+
+              {/* Android Screen Controls */}
+              <div className="flex space-x-4 mt-4">
+                <button
+                  className={`px-4 py-2 rounded-lg ${androidActiveScreen === 1 ? 'bg-[#01c853] text-white' : 'bg-gray-200 text-gray-700'}`}
+                  onClick={() => setAndroidActiveScreen(1)}
+                >
+                  Home Screen
+                </button>
+                <button
+                  className={`px-4 py-2 rounded-lg ${androidActiveScreen === 2 ? 'bg-[#01c853] text-white' : 'bg-gray-200 text-gray-700'}`}
+                  onClick={() => setAndroidActiveScreen(2)}
+                >
+                  Receive Screen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Interactive Demo Instructions */}
+        <div className="bg-white rounded-xl p-6 mb-12 border border-gray-200 shadow-sm">
+          <h3 className="text-xl font-bold mb-4 text-gray-800">How to Use This Demo</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-[#0136c0] text-white rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                  1
+                </div>
+                <p className="text-gray-600">
+                  <strong>iPhone Demo:</strong> Click the blue "Home Screen" and "Receive Screen" buttons below the iPhone to switch between views.
+                </p>
+              </div>
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-[#0136c0] text-white rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                  2
+                </div>
+                <p className="text-gray-600">
+                  <strong>Android Demo:</strong> Click the green "Home Screen" and "Receive Screen" buttons below the Android to switch between views.
+                </p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-[#01c853] text-white rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                  3
+                </div>
+                <p className="text-gray-600">
+                  <strong>Interactive Buttons:</strong> Click the Send, Receive, Spend Now, and View Transactions buttons on both devices to see demo alerts.
+                </p>
+              </div>
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-[#01c853] text-white rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                  4
+                </div>
+                <p className="text-gray-600">
+                  <strong>Cross-Platform:</strong> Both iPhone and Android show identical MyChangeX functionality, demonstrating our platform's consistency.
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* CTA Section */}
-        <div className=" rounded-lg p-8 text-center   mb-12">
+        <div className="rounded-lg p-8 text-center mb-12">
           <h2 className="text-2xl font-bold mb-4 text-gray-800">
             Ready to Experience MyChangeX?
           </h2>
           <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Join thousands of users who have revolutionized their digital
-            transactions with our secure and intuitive platform.
+            Join thousands of users who have revolutionized their digital transactions with our secure and intuitive platform.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <button
-              className="px-8 py-3  text-gray-800 rounded-lg font-semibold  hover:bg-gray-50 transition"
+              className="px-8 py-3 bg-[#0136c0] text-white rounded-lg font-semibold hover:bg-[#012da0] transition"
+              onClick={() => alert("Download app - This is a demo.")}
+            >
+              Download App
+            </button>
+            <button
+              className="px-8 py-3 border border-gray-300 text-gray-800 rounded-lg font-semibold hover:bg-gray-50 transition"
               onClick={() => navigate("/")}
             >
               Back to Home
