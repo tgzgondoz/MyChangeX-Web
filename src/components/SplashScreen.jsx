@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const SplashScreen = ({ onLoadingComplete }) => {
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -26,79 +26,60 @@ const SplashScreen = ({ onLoadingComplete }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#f8f9fb]">
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="text-center"
+        className="flex flex-col items-center justify-center w-full"
       >
         {/* Logo/Icon */}
-        <div className="mb-8">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-24 h-24 mx-auto bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center"
-          >
-            <span className="text-3xl font-bold text-white">M</span>
-          </motion.div>
-        </div>
-
-        {/* App Name */}
-        <motion.h1
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-4xl font-bold text-gray-800 mb-2"
+          className="mb-8 flex flex-col items-center"
         >
-          MYCHANGEX
-        </motion.h1>
-        <p className="text-gray-600 mb-8">Loading your experience...</p>
-
-        {/* Progress Bar */}
-        <div className="w-64 h-2 bg-gray-200 rounded-full overflow-hidden">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${loadingProgress}%` }}
-            transition={{ duration: 0.3 }}
-            className="h-full bg-gradient-to-r from-blue-500 to-indigo-600"
-          />
-        </div>
-
-        {/* Progress Percentage */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mt-4 text-sm text-gray-500"
-        >
-          {loadingProgress}%
-        </motion.p>
-
-        {/* Loading Dots Animation */}
-        <motion.div className="flex justify-center mt-6">
-          {[0, 1, 2].map((i) => (
+          <div className="w-28 h-28 bg-[#0136c0] rounded-full flex items-center justify-center mb-4">
+            <span className="text-1xl font-bold text-white">MyChangeX</span>
+          </div>
+        </motion.div>
+        <br />
+        <br />
+        {/* Loading Spinner & Text */}
+        <div className="flex flex-col items-center mb-10">
+          <div className="relative w-9 h-9 mb-1">
             <motion.div
-              key={i}
-              className="w-2 h-2 bg-blue-500 rounded-full mx-1"
-              animate={{ y: ["0%", "-50%", "0%"] }}
+              className="absolute top-0 left-0 w-full h-full border-[3px] border-transparent border-t-[#0136c0] border-r-[#0136c0] rounded-full"
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 360 }}
               transition={{
-                duration: 0.6,
+                duration: 2,
                 repeat: Infinity,
-                delay: i * 0.2,
+                ease: "linear",
               }}
             />
-          ))}
-        </motion.div>
+          </div>
+          <br />
+          <br />
+          <p className="text-gray-600 mb-1">Loading ...</p>
+          <br />
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-sm text-gray-600"
+          >
+            {loadingProgress}%
+          </motion.p>
+        </div>
       </motion.div>
 
-      {/* Copyright */}
+      {/* Copyright - centered at bottom */}
       <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-8 text-gray-400 text-sm"
+      
+        className="absolute bottom-8 text-gray-500 text-sm text-center w-full"
       >
-        © 2024 MYCHANGEX. All rights reserved.
+        © 2026 MyChangeX. All rights reserved.
       </motion.p>
     </div>
   );

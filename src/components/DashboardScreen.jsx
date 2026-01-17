@@ -337,7 +337,7 @@ const MyChangeXFullScreen = () => {
 
       {/* Main Split Layout */}
       <div className="flex min-h-screen pt-16">
-        {/* Left Side - Black & White Text Content */}
+        {/* Left Side - Black & White Text Content with Font Size 11/12 */}
         <div
           ref={textContainerRef}
           className="w-1/2 p-8 pr-16 overflow-y-auto scrollbar-hide"
@@ -348,11 +348,11 @@ const MyChangeXFullScreen = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-16"
+              className="mb-14"
             >
-              <div className="relative mb-8">
-                <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-black to-transparent"></div>
-                <h1 className="text-6xl font-black leading-tight mb-6 text-black tracking-tight">
+              <div className="relative mb-7">
+                <div className="absolute -left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-black to-transparent"></div>
+                <h1 className="text-4xl font-black leading-tight mb-5 text-black tracking-tight">
                   The Future of Money is
                   <span className="block text-black">
                     Ours to Create
@@ -360,16 +360,16 @@ const MyChangeXFullScreen = () => {
                 </h1>
               </div>
               
-              <div className="mb-8">
-                <p className="text-xl text-black leading-relaxed mb-6">
+              <div className="mb-7">
+                <p className="text-sm leading-relaxed mb-5 text-black">
                   MyChangeX is a revolutionary fintech super-app born out of the
                   critical need to solve Zimbabwe's longstanding problem with physical 
                   small change. We transform coins and notes into digital assets that 
                   work harder for you in today's economy.
                 </p>
                 
-                <div className="border-l-4 border-black pl-4 py-2 my-6">
-                  <p className="text-lg font-medium text-black italic">
+                <div className="border-l-3 border-black pl-4 py-2 my-5">
+                  <p className="text-sm font-medium text-black italic">
                     "Digitizing change isn't just about convenience—it's about 
                     empowering every Zimbabwean to participate fully in the digital economy."
                   </p>
@@ -381,13 +381,13 @@ const MyChangeXFullScreen = () => {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              className="mb-16 relative"
+              className="mb-14 relative"
             >
-              <h2 className="text-3xl font-bold mb-6 text-black relative">
+              <h2 className="text-base font-bold mb-5 text-black relative">
                 Our Mission
-                <div className="w-16 h-1 bg-black mt-2"></div>
+                <div className="w-14 h-0.5 bg-black mt-1.5"></div>
               </h2>
-              <p className="text-lg leading-relaxed text-black space-y-4">
+              <p className="text-sm leading-relaxed text-black space-y-3">
                 <span className="block">
                   We're building more than an app—we're creating Zimbabwe's financial 
                   infrastructure for the 21st century. From street vendors to corporate 
@@ -409,20 +409,20 @@ const MyChangeXFullScreen = () => {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="mb-16 group relative"
+                className="mb-14 group relative"
               >
                 <div className="mb-4">
-                  <h2 className="text-2xl font-bold mb-3 text-black">
+                  <h2 className="text-base font-bold mb-3 text-black">
                     {feature.title}
                   </h2>
                 </div>
                 
-                <p className="text-lg leading-relaxed text-black">
+                <p className="text-sm leading-relaxed text-black">
                   {feature.description}
                 </p>
                 
                 {/* Subtle decorative line */}
-                <div className="mt-6 pt-6 border-t border-gray-300"></div>
+                <div className="mt-5 pt-5 border-t border-gray-300"></div>
               </motion.div>
             ))}
 
@@ -430,39 +430,39 @@ const MyChangeXFullScreen = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="mb-16 relative"
+              className="mb-14 relative"
             >
-              <h2 className="text-3xl font-bold mb-6 text-black">
+              <h2 className="text-base font-bold mb-5 text-black">
                 The MyChangeX Impact
-                <div className="w-16 h-1 bg-black mt-2"></div>
+                <div className="w-14 h-0.5 bg-black mt-1.5"></div>
               </h2>
               
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div className="flex items-start">
-                  <div className="mr-4 mt-1">
-                    <div className="w-3 h-3 bg-black rounded-full"></div>
+                  <div className="mr-3 mt-1">
+                    <div className="w-2.5 h-2.5 bg-black rounded-full"></div>
                   </div>
-                  <p className="text-lg text-black">
+                  <p className="text-sm text-black">
                     <span className="font-semibold">Financial Inclusion:</span> Bringing 
                     digital financial services to every corner of Zimbabwe
                   </p>
                 </div>
                 
                 <div className="flex items-start">
-                  <div className="mr-4 mt-1">
-                    <div className="w-3 h-3 bg-black rounded-full"></div>
+                  <div className="mr-3 mt-1">
+                    <div className="w-2.5 h-2.5 bg-black rounded-full"></div>
                   </div>
-                  <p className="text-lg text-black">
+                  <p className="text-sm text-black">
                     <span className="font-semibold">Economic Empowerment:</span> Enabling 
                     small businesses and individuals to grow their wealth
                   </p>
                 </div>
                 
                 <div className="flex items-start">
-                  <div className="mr-4 mt-1">
-                    <div className="w-3 h-3 bg-black rounded-full"></div>
+                  <div className="mr-3 mt-1">
+                    <div className="w-2.5 h-2.5 bg-black rounded-full"></div>
                   </div>
-                  <p className="text-lg text-black">
+                  <p className="text-sm text-black">
                     <span className="font-semibold">Digital Transformation:</span> Accelerating 
                     Zimbabwe's journey toward a cashless economy
                   </p>
@@ -474,13 +474,13 @@ const MyChangeXFullScreen = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="mb-16"
+              className="mb-14"
             >
-              <h2 className="text-3xl font-bold mb-6 text-black">
+              <h2 className="text-base font-bold mb-5 text-black">
                 Built on Trust & Innovation
-                <div className="w-16 h-1 bg-black mt-2"></div>
+                <div className="w-14 h-0.5 bg-black mt-1.5"></div>
               </h2>
-              <p className="text-lg leading-relaxed text-black mb-6">
+              <p className="text-sm leading-relaxed text-black mb-5">
                 Our platform combines military-grade security with intuitive design. 
                 Every transaction is encrypted, every account is protected, and every 
                 user's privacy is our top priority.
@@ -505,30 +505,30 @@ const MyChangeXFullScreen = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="pt-8 mb-24 relative"
+              className="pt-8 mb-20 relative"
             >
-              <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent to-black"></div>
+              <div className="absolute -left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent to-black"></div>
               
-              <h3 className="text-2xl font-bold mb-6 text-black">
+              <h3 className="text-base font-bold mb-5 text-black">
                 Ready to Join Zimbabwe's Financial Revolution?
               </h3>
               
-              <p className="text-xl text-black mb-8 leading-relaxed">
+              <p className="text-sm text-black mb-7 leading-relaxed">
                 Be part of the movement that's transforming how Zimbabwe handles money. 
                 From spare change to significant savings, MyChangeX puts financial 
                 power back in your hands.
               </p>
               
-              <div className="flex space-x-6">
-                <button className="px-8 py-4 bg-black text-white rounded-xl font-semibold text-lg hover:bg-gray-800 transition-all transform hover:-translate-y-1">
+              <div className="flex space-x-5">
+                <button className="px-7 py-3.5 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-800 transition-all transform hover:-translate-y-0.5">
                   Start Your Journey
                 </button>
-                <button className="px-8 py-4 border-2 border-black text-black rounded-xl font-semibold text-lg hover:bg-black hover:text-white transition-all">
+                <button className="px-7 py-3.5 border border-black text-black rounded-lg font-semibold text-sm hover:bg-black hover:text-white transition-all">
                   Watch Demo
                 </button>
               </div>
               
-              <p className="mt-6 text-sm text-gray-600">
+              <p className="mt-5 text-sm text-gray-600">
                 Join over 50,000 Zimbabweans who trust MyChangeX with their daily transactions
               </p>
             </motion.div>
