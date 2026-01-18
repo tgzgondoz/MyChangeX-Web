@@ -11,9 +11,8 @@ const Footer = () => {
           © 2026 MyChangeX. The Future of Money is Ours.
         </div>
         <div className="flex space-x-4">
-          <a href="#" className="text-[12px] text-gray-600 hover:text-[#0136c0] transition">Twitter</a>
-          <a href="#" className="text-[12px] text-gray-600 hover:text-[#0136c0] transition">LinkedIn</a>
-          <a href="#" className="text-[12px] text-gray-600 hover:text-[#0136c0] transition">Instagram</a>
+          <a href="https://www.tiktok.com/@co.munity?_r=1&_t=ZS-93AXuGusQ9h" className="text-[12px] text-gray-600 hover:text-[#0136c0] transition">TikTok</a>
+          <a href="https://www.instagram.com/mychange_x?igsh=MTRqcW1zNHRjZjlvNg%3D%3D&utm_source=qr" className="text-[12px] text-gray-600 hover:text-[#0136c0] transition">Instagram</a>
         </div>
       </div>
     </footer>
