@@ -533,10 +533,9 @@ const MyChangeXFullScreen = () => {
               </p>
 
               <div className="flex space-x-5">
-               
                 {/* UPDATED: Navigate to demo page */}
                 <button
-                  onClick={() => navigate('/demo')}
+                  onClick={() => navigate("/demo")}
                   className="px-7 py-3.5 border border-black text-black rounded-lg font-semibold text-sm hover:bg-black hover:text-white transition-all inline-block text-center"
                 >
                   Watch Demo
@@ -670,18 +669,19 @@ const MyChangeXFullScreen = () => {
             {/* Scroll Indicator */}
             <div className="absolute -left-16 top-1/2 transform -translate-y-1/2">
               <div className="flex flex-col items-center">
-                <div className="h-48 w-px bg-gradient-to-b from-blue-500 via-indigo-500 to-transparent">
+                <div className="h-48 w-px bg-gradient-to-b from-blue-500 via-indigo-500 to-transparent mb-4">
                   <motion.div
                     className="w-2 h-2 bg-blue-500 rounded-full -ml-0.5"
                     animate={{ y: scrollProgress * 192 }}
                   ></motion.div>
                 </div>
-                <span className="mt-4 text-xs text-gray-500 rotate-90 whitespace-nowrap">
+                <br />
+                <br />
+                <span className="text-xs text-gray-500 rotate-90 whitespace-nowrap">
                   Scroll to explore
                 </span>
               </div>
             </div>
-
             {/* Screen Indicator */}
             <div className="absolute -right-16 top-1/2 transform -translate-y-1/2">
               <div className="flex flex-col items-center space-y-4">
