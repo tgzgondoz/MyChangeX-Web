@@ -220,41 +220,46 @@ const MyChangeXFullScreen = () => {
   );
 
   const renderHomeScreen = () => (
-    <div className="h-full bg-[#f8f9fb] overflow-y-auto">
-      <div className="p-4">
-        <div className="mb-4">
-          <h2 className="text-xl font-bold text-black">Tatenda</h2>
-          <p className="text-gray-500 text-sm">+263 00 000 2506</p>
-        </div>
+    <div className="h-full bg-[#f8f9fb] flex flex-col">
+      <div className="p-4 flex-1 flex flex-col justify-between">
+        {/* Top Section */}
+        <div>
+          <div className="mb-4">
+            <h2 className="text-lg font-bold text-black">Tatenda</h2>
+            <p className="text-gray-500 text-xs">+263 00 000 2506</p>
+          </div>
 
-        <div className="mb-6 bg-white rounded-2xl p-4 border border-gray-200">
-          <div className="flex items-center mb-3">
-            <div className="w-4 h-4 border-2 border-gray-400 rounded-full mr-3 flex items-center justify-center">
-              <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+          {/* Balance Card - Compact */}
+          <div className="mb-5 bg-white rounded-xl p-3 border border-gray-200">
+            <div className="flex items-center mb-8">
+              <div className="w-3 h-3 border-2 border-gray-400 rounded-full mr-2 flex items-center justify-center">
+                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+              </div>
+              <span className="text-xs text-gray-600">Total Balance</span>
             </div>
-            <span className="text-sm text-gray-600">Total Balance</span>
-          </div>
 
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-3xl font-bold text-black">
-              ${balance.toFixed(2)}
-            </h3>
-            <div className="text-gray-500 text-sm">USD</div>
-          </div>
+            <div className="flex items-center justify-between">
+              <h3 className="text-4xl font-bold text-black">
+                ${balance.toFixed(2)}
+              </h3>
+              <div className="text-gray-500 text-xs">USD</div>
+            </div>
 
-          <div className="flex items-center justify-right space-x-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span className="text-xs text-gray-500">Updated</span>
+            <div className="flex items-center justify-end mt-1">
+              <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1"></div>
+              <span className="text-xs text-gray-500">Updated</span>
+            </div>
           </div>
         </div>
 
-        <div className="flex justify-center space-x-16 mb-6">
+        {/* Middle Section - Send/Receive Buttons */}
+        <div className="flex justify-center space-x-10 mb-4">
           <div className="flex flex-col items-center">
-            <button className="w-14 h-14 bg-[#0136c0] rounded-full flex items-center justify-center mb-2 shadow-sm hover:shadow-md transition-all">
+            <button className="w-12 h-12 bg-[#0136c0] rounded-full flex items-center justify-center mb-1 shadow-sm hover:shadow-md transition-all">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="white"
@@ -264,15 +269,15 @@ const MyChangeXFullScreen = () => {
                 <polygon points="22 2 15 22 11 13 2 9 22 2" />
               </svg>
             </button>
-            <span className="text-sm text-black font-medium">Send</span>
+            <span className="text-xs text-black font-medium">Send</span>
           </div>
 
           <div className="flex flex-col items-center">
-            <button className="w-14 h-14 bg-[#01c853] rounded-full flex items-center justify-center mb-2 shadow-sm hover:shadow-md transition-all">
+            <button className="w-12 h-12 bg-[#01c853] rounded-full flex items-center justify-center mb-1 shadow-sm hover:shadow-md transition-all">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="white"
@@ -285,18 +290,19 @@ const MyChangeXFullScreen = () => {
                 <line x1="7" y1="12" x2="17" y2="12" />
               </svg>
             </button>
-            <span className="text-sm text-black font-medium">Receive</span>
+            <span className="text-xs text-black font-medium">Receive</span>
           </div>
         </div>
 
-        <div className="mt-8 rounded-2xl p-4 text-white bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
-          <p className="text-black font-semibold text-center mb-2">
+        {/* Bottom Section - Spend Button */}
+        <div className="mb-8">
+          <p className="text-black font-semibold text-center text-sm mb-2">
             Spend Your Change
           </p>
-          <p className="text-gray-600 text-sm text-center mb-4">
+          <p className="text-gray-600 text-xs text-center mb-4">
             To pay for bills, airtime, and event tickets
           </p>
-          <button className="w-full py-3 bg-[#0136c0] text-white rounded-xl font-semibold hover:bg-[#012da0] transition-all shadow-sm">
+          <button className="w-full py-2 bg-[#0136c0] text-white rounded-lg font-semibold text-sm hover:bg-[#012da0] transition-all shadow-sm">
             Spend Now
           </button>
         </div>
@@ -307,22 +313,22 @@ const MyChangeXFullScreen = () => {
   const renderReceiveScreen = () => (
     <div className="h-full bg-[#f8f9fb] p-4 overflow-y-auto">
       <div className="flex flex-col items-center justify-center h-full">
-        <h3 className="text-xl font-bold mb-4 text-center text-gray-800">
+        <h3 className="text-lg font-bold mb-3 text-center text-gray-800">
           Receive Coupons
         </h3>
 
-        <p className="text-center text-gray-500 mb-4 text-sm font-medium">
+        <p className="text-center text-gray-500 mb-3 text-xs font-medium">
           SCAN THIS CODE TO RECEIVE COUPONS
         </p>
 
-        <div className="mb-6 flex justify-center">
-          <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
-            <div className="w-40 h-40 flex items-center justify-center mx-auto">
+        <div className="mb-4 flex justify-center">
+          <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+            <div className="w-32 h-32 flex items-center justify-center mx-auto">
               <div className="relative">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="160"
-                  height="160"
+                  width="128"
+                  height="128"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="#0136c0"
@@ -342,11 +348,11 @@ const MyChangeXFullScreen = () => {
           </div>
         </div>
 
-        <p className="text-center text-gray-600 mb-6 text-sm font-medium tracking-wide">
+        <p className="text-center text-gray-600 mb-4 text-xs font-medium tracking-wide">
           hold this code to the scanner
         </p>
 
-        <button className="px-6 py-3 text-blue-600 font-semibold text-center border border-blue-200 rounded-lg hover:bg-blue-50 transition-all">
+        <button className="px-4 py-2 text-blue-600 font-semibold text-center border border-blue-200 rounded-lg hover:bg-blue-50 transition-all text-sm">
           View Transactions
         </button>
       </div>
