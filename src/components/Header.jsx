@@ -34,7 +34,7 @@ const Header = () => {
           About
         </a>
       </div>
-      <div className=" flex items-center space-x-6  mr-1 text-[#0136c0] text-lg font-medium">
+      <div className="flex items-center space-x-6 mr-1 text-[#0136c0] text-lg font-medium">
         <SignedOut>
           <SignInButton />
         </SignedOut>
@@ -42,10 +42,22 @@ const Header = () => {
           <UserButton />
         </SignedIn>
       </div>
-     
-      <button className="px-6 py-2 bg-[#0136c0] text-white rounded-lg font-semibold hover:bg-blue-800 transition">
-        Download App
-      </button>
+
+      {/* Download Button - Only shows when signed in */}
+      <SignedIn>
+        <button className="px-6 py-2 bg-[#0136c0] text-white rounded-lg font-semibold hover:bg-blue-800 transition">
+          Download App
+        </button>
+      </SignedIn>
+      
+      {/* Sign In button styled like download button when signed out */}
+      <SignedOut>
+        <SignInButton mode="modal">
+          <button className="px-6 py-2 bg-[#0136c0] text-white rounded-lg font-semibold hover:bg-blue-800 transition cursor-pointer">
+            Download App
+          </button>
+        </SignInButton>
+      </SignedOut>
     </nav>
   );
 };
