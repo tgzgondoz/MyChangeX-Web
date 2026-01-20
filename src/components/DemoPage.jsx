@@ -95,26 +95,29 @@ const DemoPage = () => {
 
       {/* Balance Section */}
       <SmoothReveal delay={0.2}>
-        <div className="mb-5 bg-white rounded-xl p-2 border border-gray-200">
-          <div className="lex items-center mb-8">
-            <div className="w-3 h-3 border-2 border-gray-400 rounded-full mr-1 flex items-center justify-center">
-              
+            
+          <div className="mb-5 bg-white rounded-xl p-2 border border-gray-200">
+            <div className="flex items-center mb-8">
+              <div className="w-3 h-3 border-2 border-gray-400 rounded-full mr-2 flex items-center justify-center">
+                <div className="w-1.5 h-.5 bg-gray-400 rounded-full"></div>
+                 
+              </div>
+             <span className="text-xs text-gray-600">Total Balance</span>
             </div>
-            <span className="text-xs text-gray-600">Total Balance</span>
-          </div>
 
-          <div className="flex items-center justify-between">
-            <h3 className="text-4xl font-bold text-black">
-              ${balance.toFixed(2)}
-            </h3>
-            <div className="text-gray-500 text-sm">USD</div>
-          </div>
+            <div className="flex items-center justify-between">
+              <h3 className="text-4xl font-bold text-black">
+                ${balance.toFixed(2)}
+              </h3>
+              <div className="text-gray-500 text-xs">USD</div>
+            </div>
 
-          <div className="flex items-center justify-end mt-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
-            <span className="text-xs text-gray-500">Updated</span>
+            <div className="flex items-center justify-end mt-1">
+              <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1"></div>
+              <span className="text-xs text-gray-500">Updated</span>
+            </div>
           </div>
-        </div>
+       
       </SmoothReveal>
 
       {/* Circular Send/Receive Buttons */}
