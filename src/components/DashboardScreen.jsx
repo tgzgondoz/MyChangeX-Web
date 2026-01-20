@@ -230,12 +230,13 @@ const MyChangeXFullScreen = () => {
           </div>
 
           {/* Balance Card - Compact */}
-          <div className="mb-5 bg-white rounded-xl p-3 border border-gray-200">
+          <div className="mb-5 bg-white rounded-xl p-2 border border-gray-200">
             <div className="flex items-center mb-8">
               <div className="w-3 h-3 border-2 border-gray-400 rounded-full mr-2 flex items-center justify-center">
-                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                <div className="w-1.5 h-.5 bg-gray-400 rounded-full"></div>
+                 
               </div>
-              <span className="text-xs text-gray-600">Total Balance</span>
+             <span className="text-xs text-gray-600">Total Balance</span>
             </div>
 
             <div className="flex items-center justify-between">
@@ -302,7 +303,7 @@ const MyChangeXFullScreen = () => {
           <p className="text-gray-600 text-xs text-center mb-4">
             To pay for bills, airtime, and event tickets
           </p>
-          <button className="w-full py-2 bg-[#0136c0] text-white rounded-lg font-semibold text-sm hover:bg-[#012da0] transition-all shadow-sm">
+          <button className="w-full py-3 bg-[#0136c0] text-white rounded-lg font-semibold text-sm hover:bg-[#012da0] transition-all shadow-sm">
             Spend Now
           </button>
         </div>
@@ -352,7 +353,7 @@ const MyChangeXFullScreen = () => {
           hold this code to the scanner
         </p>
 
-        <button className="px-4 py-2 text-blue-600 font-semibold text-center border border-blue-200 rounded-lg hover:bg-blue-50 transition-all text-sm">
+        <button className="px-4 py-2 text-blue-600 font-semibold text-center  text-sm">
           View Transactions
         </button>
       </div>
