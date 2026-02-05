@@ -2,7 +2,7 @@ import React from "react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 const Header = () => {
-  const downloadLink = "https://expo.dev/accounts/tatenda_gondo/projects/mychangex-proper/builds/0a2e17c9-d05c-43fc-98c4-384c62c1e04d";
+  const downloadLink = "https://expo.dev/accounts/tatenda_gondo/projects/mychangex-proper/builds/248098d3-56ce-4f48-889c-b7a66aa66777";
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-8 py-4 flex justify-between items-center bg-white border-b border-gray-200">
